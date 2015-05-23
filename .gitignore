@@ -1,0 +1,9 @@
+html
+latex
+
+# PyCharm
+.idea
+
+# Mac
+.DS_Store
+._*
