@@ -7,7 +7,7 @@
 #include "rotation_matrix.h"
 
 
-int rotate_by_x(double a, double matr[N][N])
+void rotate_by_x(double a, double matr[3][3])
 {
     matr[0][0] = 1;
     matr[0][1] = 0;
@@ -21,11 +21,12 @@ int rotate_by_x(double a, double matr[N][N])
     matr[2][1] = -sin(a);
     matr[2][2] = cos(a);
 
-    return 0;
+    return;
 }
 
 
-int rotate_by_y(double a, double matr[N][N]) {
+void rotate_by_y(double a, double matr[3][3])
+{
     matr[0][0] = cos(a);
     matr[0][1] = 0;
     matr[0][2] = -sin(a);
@@ -38,10 +39,11 @@ int rotate_by_y(double a, double matr[N][N]) {
     matr[2][1] = 0;
     matr[2][2] = cos(a);
 
-    return 0;
+    return;
 }
 
-int rotate_by_z(double a, double matr[N][N])
+
+void rotate_by_z(double a, double matr[3][3])
 {
     matr[0][0] = cos(a);
     matr[0][1] = sin(a);
@@ -55,7 +57,14 @@ int rotate_by_z(double a, double matr[N][N])
     matr[2][1] = 0;
     matr[2][2] = 1;
 
-    return 0;
+    return;
+}
+
+
+void get_earth_rotation_matrix(double gast, double matr[3][3])
+{
+    rotate_by_z(gast, matr);
+    return;
 }
 
 

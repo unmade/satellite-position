@@ -3,7 +3,11 @@
 //
 
 #include <math.h>
+#include <stdio.h>
 #include "date_converters.h"
+#include "../constants.h"
+#include "../nutation.h"
+
 #define TT_TAI_DIFF 32.184
 
 double utc_to_mjd(int nyear, int nmonth, int nday,
@@ -62,13 +66,24 @@ double utc_to_tt(int nyear, int nmonth, int nday,
 }
 
 
+double mjd_to_tt(double mjd_in_utc)
+{
+    int year, month, day, hour, minute;
+    double seconds;
+    mjd_to_utc(mjd_in_utc, &year, &month, &day, &hour, &minute, &seconds);
+    double deltaT = get_deltaT(year, month);
+
+    return mjd_in_utc + (deltaT / 86400);
+}
+
+
 double tt_to_tdb(double tt)
 {
     double d = (tt - 51544.5) / 36525;
     double g = (M_PI / 180) * (357.258 + 35999.050 * d);
     return tt + ((0.00168*sin(g+0.0167*sin(g)))/86400);
 
-//    double mjd = utc_to_mjd(2003, 11, 15, 15, 35, 0.0);
+//    double mjd = utc_to_mjd(2003, 3, 7, 2, 45, 0.0);
 //    double t = (mjd + 2400000.5 - 2451545.0) / 36525.0;
 //    double dtr = M_PI / 180;
 //    double corr;
@@ -88,6 +103,64 @@ double tt_to_tdb(double tt)
 //           +  0.043 * t * sin(dtr * (35999.373  * t + 151.121));
 //
 //    return tt + (0.000001 * corr / 86400.0);
+}
+
+
+double utc_to_gmst(double utc_in_mjd, double delta_ut)
+{
+    double ts = utc_in_mjd + delta_ut / 86400;
+    double ts_trunc = trunc(ts);
+    double s = ts - ts_trunc;
+    double tu = (trunc(ts) - 51544.5) / 36525;
+    double s0 = 1.753368559233266 + (628.3319706888409
+                + (6.770713944903336e-06 - 4.508767234318685e-10*tu)*tu)*tu;
+    double freq = 1.002737909350795
+                  + (5.900575455674703e-11 - 5.893984333409384e-15*tu)*tu;
+    s0 += freq*s*PI2;
+    double r = s0 / (PI2);
+    double i = trunc(r);
+
+    double gmst = s0 - PI2*i;
+    if (gmst < 0)
+    {
+        gmst += PI2;
+    }
+
+    return gmst;
+}
+
+
+double utc_to_gast(int year, int month, int day, int hour,
+                   int minute, double second, double delta_ut)
+{
+    double mjd = utc_to_mjd(year, month, day, hour, minute, second);
+    double tt = utc_to_tt(year, month, day, hour, minute, second);
+    double tdb = tt_to_tdb(tt);
+
+    double eps = get_eps_mean(tdb);
+
+    double delta_psi, delta_eps;
+    get_nutation_parameters(tdb, &delta_psi, &delta_eps);
+
+    double gmst = utc_to_gmst(mjd, delta_ut);
+
+    return gmst + delta_psi*cos(eps);
+}
+
+
+double mjd_to_gast(double utc_in_mjd, double delta_ut)
+{
+    double tt = mjd_to_tt(utc_in_mjd);
+    double tdb = tt_to_tdb(tt);
+
+    double eps = get_eps_mean(tdb);
+
+    double delta_psi, delta_eps;
+    get_nutation_parameters(tdb, &delta_psi, &delta_eps);
+
+    double gmst = utc_to_gmst(utc_in_mjd, delta_ut);
+
+    return gmst + delta_psi*cos(eps);
 }
 
 

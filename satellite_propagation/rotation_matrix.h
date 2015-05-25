@@ -6,9 +6,7 @@
 
 #ifndef SATELLITE_PROPAGATION_ROTATION_MATRIX_H
 #define SATELLITE_PROPAGATION_ROTATION_MATRIX_H
-#define N 3
 #endif //SATELLITE_PROPAGATION_ROTATION_MATRIX_H
-
 
 
 /**
@@ -17,9 +15,8 @@
  * @param[in] a Угол поворота в радианах
  * @param[out] matr Матрица поворота
  *
- * @return 0
  */
-int rotate_by_x(double a, double matr[N][N]);
+void rotate_by_x(double a, double matr[3][3]);
 
 
 /**
@@ -28,9 +25,8 @@ int rotate_by_x(double a, double matr[N][N]);
  * @param[in] a Угол поворота в радианах
  * @param[out] matr Матрица поворота
  *
- * @return 0
  */
-int rotate_by_y(double a, double matr[N][N]);
+void rotate_by_y(double a, double matr[3][3]);
 
 
 /**
@@ -39,9 +35,18 @@ int rotate_by_y(double a, double matr[N][N]);
  * @param[in] a Угол поворота в радианах
  * @param[out] matr Матрица поворота
  *
- * @return 0
  */
-int rotate_by_z(double a, double matr[N][N]);
+void rotate_by_z(double a, double matr[3][3]);
+
+
+/**
+ * Определяет матрицу вращение Земли
+ *
+ * @param[in] gast Гринвическое истинное звездное время
+ * @param[out] matr Матрица поворота
+ *
+ */
+void get_earth_rotation_matrix(double gast, double matr[3][3]);
 
 
 //double** rotate_by_y(double a);

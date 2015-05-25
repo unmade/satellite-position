@@ -58,6 +58,16 @@ double utc_to_tt(int nyear, int nmonth, int nday,
 
 
 /**
+ * Переводит календарную дату в Земное время
+ *
+ * @param[in] mjd Момент времени UTC, выраженный в модифицированных юлианских днях
+ *
+ * @return Земное время в юлианских днях
+ */
+double mjd_to_tt(double mjd_in_utc);
+
+
+/**
  * Переводит Земное время в Барицентрическое динамическое
  *
  * @param[in] tt Земное время
@@ -65,6 +75,48 @@ double utc_to_tt(int nyear, int nmonth, int nday,
  * @return Барицентрическое динамическое время
  */
 double tt_to_tdb(double tt);
+
+
+/**
+ * Переводит момент времени UTC, выраженный в модифицированных в юлианских днях
+ * в гринвическое среднее звездное время
+ *
+ * @param[in] utc_in_mjd момент времени UTC, выраженный в модифицированных в юлианских днях
+ * @param[out] delta_ut Поправка ∆T = UT1 - UTC
+ *
+ * @return Гринвическое среднее звездное время выраженное в радианах
+ */
+double utc_to_gmst(double utc_in_mjd, double delta_ut);
+
+
+/**
+ * Переводит момент времени UTC, выраженный в модифицированных в юлианских днях
+ * в гринвическое истинное звездное время
+ *
+ * @param[in] year Год
+ * @param[in] month Месяц
+ * @param[in] day День
+ * @param[in] hour Часы
+ * @param[in] minute Минуты
+ * @param[in] second Секунды
+ * @param[out] delta_ut Поправка ∆T = UT1 - UTC
+ *
+ * @return Гринвическое истинное звездное время выраженное в радианах
+ */
+double utc_to_gast(int year, int month, int day, int hour,
+                   int minute, double second, double delta_ut);
+
+
+/**
+ * Переводит момент времени UTC, выраженный в модифицированных в юлианских днях
+ * в гринвическое истинное звездное время
+ *
+ * @param[in] utc_in_mjd момент времени UTC, выраженный в модифицированных юлианских днях
+ * @param[out] delta_ut Поправка ∆T = UT1 - UTC
+ *
+ * @return Гринвическое среднее звездное время выраженное в радианах
+ */
+double mjd_to_gast(double utc_in_mjd, double delta_ut);
 
 
 /**
