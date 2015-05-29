@@ -17,7 +17,7 @@
  * к небесной
  *
  */
-void mean_equ_to_fixed(double precession_matrix[3][3], double m_p[3][3]);
+void mean_equ_to_fixed(long double precession_matrix[3][3], long double m_p[3][3]);
 
 
 /**
@@ -28,8 +28,8 @@ void mean_equ_to_fixed(double precession_matrix[3][3], double m_p[3][3]);
  * @param[out] m_np[3][3] Матрица преобразования от небесной к истинной экваториальной СК
  *
  */
-void fixed_to_true_equ(double precession_matrix[3][3], double nutation_matrix[3][3],
-                       double m_np[3][3]);
+void fixed_to_true_equ(long double precession_matrix[3][3], long double nutation_matrix[3][3],
+                       long double m_np[3][3]);
 
 
 /**
@@ -39,7 +39,7 @@ void fixed_to_true_equ(double precession_matrix[3][3], double nutation_matrix[3]
  * @param[out] m_pn[3][3] Матрица преобразования от истинной экваториальной СК к небесной
  *
  */
-void true_equ_to_fixed(double m_np[3][3], double m_pn[3][3]);
+void true_equ_to_fixed(long double m_np[3][3], long double m_pn[3][3]);
 
 /**
  * Функция реализует переход от небесной СК в земную
@@ -50,8 +50,8 @@ void true_equ_to_fixed(double m_np[3][3], double m_pn[3][3]);
  * @param[out] m_ct[3][3] Матрица перехода от небесной к земной СК
  *
  */
-void fixed_to_terra(double precession_matrix[3][3], double nutation_matrix[3][3],
-                    double earth_rotation_matrix[3][3], double m_ct[3][3]);
+void fixed_to_terra(long double precession_matrix[3][3], long double nutation_matrix[3][3],
+                    long double earth_rotation_matrix[3][3], long double m_ct[3][3]);
 
 
 /**
@@ -61,4 +61,4 @@ void fixed_to_terra(double precession_matrix[3][3], double nutation_matrix[3][3]
  * @param[out] m_tc[3][3] Матрица преобразования от истинной экваториальной СК к небесной
  *
  */
-void terra_to_fixed(double m_ct[3][3], double m_tc[3][3]);
+void terra_to_fixed(long double m_ct[3][3], long double m_tc[3][3]);

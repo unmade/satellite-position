@@ -7,50 +7,50 @@
 #include "rotation_matrix.h"
 
 
-void rotate_by_x(double a, double matr[3][3])
+void rotate_by_x(long double a, long double matr[3][3])
 {
     matr[0][0] = 1;
     matr[0][1] = 0;
     matr[0][2] = 0;
 
     matr[1][0] = 0;
-    matr[1][1] = cos(a);
-    matr[1][2] = sin(a);
+    matr[1][1] = cosl(a);
+    matr[1][2] = sinl(a);
 
     matr[2][0] = 0;
-    matr[2][1] = -sin(a);
-    matr[2][2] = cos(a);
+    matr[2][1] = -sinl(a);
+    matr[2][2] = cosl(a);
 
     return;
 }
 
 
-void rotate_by_y(double a, double matr[3][3])
+void rotate_by_y(long double a, long double matr[3][3])
 {
-    matr[0][0] = cos(a);
+    matr[0][0] = cosl(a);
     matr[0][1] = 0;
-    matr[0][2] = -sin(a);
+    matr[0][2] = -sinl(a);
 
     matr[1][0] = 0;
     matr[1][1] = 1;
     matr[1][2] = 0;
 
-    matr[2][0] = sin(a);
+    matr[2][0] = sinl(a);
     matr[2][1] = 0;
-    matr[2][2] = cos(a);
+    matr[2][2] = cosl(a);
 
     return;
 }
 
 
-void rotate_by_z(double a, double matr[3][3])
+void rotate_by_z(long double a, long double matr[3][3])
 {
-    matr[0][0] = cos(a);
-    matr[0][1] = sin(a);
+    matr[0][0] = cosl(a);
+    matr[0][1] = sinl(a);
     matr[0][2] = 0;
 
-    matr[1][0] = -sin(a);
-    matr[1][1] = cos(a);
+    matr[1][0] = -sinl(a);
+    matr[1][1] = cosl(a);
     matr[1][2] = 0;
 
     matr[2][0] = 0;
@@ -61,26 +61,26 @@ void rotate_by_z(double a, double matr[3][3])
 }
 
 
-void get_earth_rotation_matrix(double gast, double matr[3][3])
+void get_earth_rotation_matrix(long double gast, long double matr[3][3])
 {
     rotate_by_z(gast, matr);
     return;
 }
 
 
-//void destroyArray(double** arr)
+//void destroyArray(long double** arr)
 //{
 //    free(*arr);
 //    free(arr);
 //}
 
 
-//double **rotate_by_y(double a)
+//long double **rotate_by_y(long double a)
 //{
 //    int i;
-//    double **matr = (double **)malloc(N * sizeof(double *));
+//    long double **matr = (long double **)malloc(N * sizeof(long double *));
 //    for (i=0; i<N; i++)
-//        matr[i] = (double *)malloc(N * sizeof(double));
+//        matr[i] = (long double *)malloc(N * sizeof(long double));
 //
 //    matr[0][0] = cos(a);
 //    matr[0][1] = 0;
@@ -96,7 +96,7 @@ void get_earth_rotation_matrix(double gast, double matr[3][3])
 //
 //    return matr;
 
-//    double matr[N][N] = { {cos(a), 0, -sin(a)},
+//    long double matr[N][N] = { {cos(a), 0, -sin(a)},
 //                          {0, 1, 0},
 //                          {sin(a), 0, cos(a)}};
 //}

@@ -20,8 +20,8 @@
  *
  * @return Модифицированный юлианский день
  */
-double utc_to_mjd(int nyear, int nmonth, int nday,
-                  int nhour, int nminute, double nsecond);
+long double utc_to_mjd(int nyear, int nmonth, int nday,
+                  int nhour, int nminute, long double nsecond);
 
 
 /**
@@ -37,8 +37,8 @@ double utc_to_mjd(int nyear, int nmonth, int nday,
  *
  * @return 0
  */
-void mjd_to_utc(double mjd, int *nyear, int *nmonth, int *nday,
-                int *nhour, int *nminute, double *nsecond);
+void mjd_to_utc(long double mjd, int *nyear, int *nmonth, int *nday,
+                int *nhour, int *nminute, long double *nsecond);
 
 
 /**
@@ -53,8 +53,8 @@ void mjd_to_utc(double mjd, int *nyear, int *nmonth, int *nday,
  *
  * @return Земное время в юлианских днях
  */
-double utc_to_tt(int nyear, int nmonth, int nday,
-                 int nhour, int nminute, double nsecond);
+long double utc_to_tt(int nyear, int nmonth, int nday,
+                 int nhour, int nminute, long double nsecond);
 
 
 /**
@@ -64,7 +64,7 @@ double utc_to_tt(int nyear, int nmonth, int nday,
  *
  * @return Земное время в юлианских днях
  */
-double mjd_to_tt(double mjd_in_utc);
+long double mjd_to_tt(long double mjd_in_utc);
 
 
 /**
@@ -74,7 +74,7 @@ double mjd_to_tt(double mjd_in_utc);
  *
  * @return Барицентрическое динамическое время
  */
-double tt_to_tdb(double tt);
+long double tt_to_tdb(long double tt);
 
 
 /**
@@ -86,7 +86,7 @@ double tt_to_tdb(double tt);
  *
  * @return Гринвическое среднее звездное время выраженное в радианах
  */
-double utc_to_gmst(double utc_in_mjd, double delta_ut);
+long double utc_to_gmst(long double utc_in_mjd, long double delta_ut);
 
 
 /**
@@ -103,8 +103,8 @@ double utc_to_gmst(double utc_in_mjd, double delta_ut);
  *
  * @return Гринвическое истинное звездное время выраженное в радианах
  */
-double utc_to_gast(int year, int month, int day, int hour,
-                   int minute, double second, double delta_ut);
+long double utc_to_gast(int year, int month, int day, int hour,
+                   int minute, long double second, long double delta_ut);
 
 
 /**
@@ -116,7 +116,7 @@ double utc_to_gast(int year, int month, int day, int hour,
  *
  * @return Гринвическое среднее звездное время выраженное в радианах
  */
-double mjd_to_gast(double utc_in_mjd, double delta_ut);
+long double mjd_to_gast(long double utc_in_mjd, long double delta_ut);
 
 
 /**
@@ -129,7 +129,7 @@ double mjd_to_gast(double utc_in_mjd, double delta_ut);
  *
  * @return 0
  */
-void days_to_hms(double days, int *nhour, int *nminute, double *nsecond);
+void days_to_hms(long double days, int *nhour, int *nminute, long double *nsecond);
 
 
 /**
@@ -141,4 +141,4 @@ void days_to_hms(double days, int *nhour, int *nminute, double *nsecond);
  *
  * @return 0
  */
-double get_deltaT(int nyear, int nmonth);
+long double get_deltaT(int nyear, int nmonth);

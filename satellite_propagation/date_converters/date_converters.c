@@ -10,8 +10,8 @@
 
 #define TT_TAI_DIFF 32.184
 
-double utc_to_mjd(int nyear, int nmonth, int nday,
-                  int nhour, int nminute, double nsecond)
+long double utc_to_mjd(int nyear, int nmonth, int nday,
+                  int nhour, int nminute, long double nsecond)
 {
     int a = (14 - nmonth) / 12;
     int y = nyear + 4800 - a;
@@ -19,30 +19,30 @@ double utc_to_mjd(int nyear, int nmonth, int nday,
 
     int jdn = nday + ((153*m + 2)/5) + 365*y + (y/4) - (y/100) + (y/400) - 32045;
 
-    double jd = jdn + (((double)nhour-12)/24) + ((double)nminute/1440) + (nsecond/86400);
+    long double jd = jdn + (((long double)nhour-12)/24) + ((long double)nminute/1440) + (nsecond/86400);
 
     return jd - 2400000.5;
 }
 
 
-void mjd_to_utc(double mjd, int *nyear, int *nmonth, int *nday,
-                int *nhour, int *nminute, double *nsecond)
+void mjd_to_utc(long double mjd, int *nyear, int *nmonth, int *nday,
+                int *nhour, int *nminute, long double *nsecond)
 {
-    double A, B, C, D, E, G, F, I;
-    double days, month, year;
+    long double A, B, C, D, E, G, F, I;
+    long double days, month, year;
 
-    double jd = mjd + 2400000.5 + 0.5;
+    long double jd = mjd + 2400000.5 + 0.5;
 
-    F = modf(jd, &I);
-    A = trunc((I - 1867216.25) / 36524.25);
+    F = modfl(jd, &I);
+    A = truncl((I - 1867216.25) / 36524.25);
 
-    B = (I > 2299160) ? I + 1 + A - trunc(A / 4) : I;
+    B = (I > 2299160) ? I + 1 + A - truncl(A / 4) : I;
     C = B + 1524;
-    D = trunc((C - 122.1) / 365.25);
-    E = trunc(365.25 * D);
-    G = trunc((C - E) / 30.6001);
+    D = truncl((C - 122.1) / 365.25);
+    E = truncl(365.25 * D);
+    G = truncl((C - E) / 30.6001);
 
-    days = C - E + F - trunc(30.6001 * G);
+    days = C - E + F - truncl(30.6001 * G);
     month = (G < 13) ? G - 1 : G - 13;
     year = (month > 2.5) ? D - 4716 : D - 4715;
 
@@ -56,37 +56,37 @@ void mjd_to_utc(double mjd, int *nyear, int *nmonth, int *nday,
 }
 
 
-double utc_to_tt(int nyear, int nmonth, int nday,
-                 int nhour, int nminute, double nsecond)
+long double utc_to_tt(int nyear, int nmonth, int nday,
+                 int nhour, int nminute, long double nsecond)
 {
-    double mjd = utc_to_mjd(nyear, nmonth, nday, nhour, nminute, nsecond);
-    double deltaT = get_deltaT(nyear, nmonth);
+    long double mjd = utc_to_mjd(nyear, nmonth, nday, nhour, nminute, nsecond);
+    long double deltaT = get_deltaT(nyear, nmonth);
 
     return mjd + (deltaT / 86400);
 }
 
 
-double mjd_to_tt(double mjd_in_utc)
+long double mjd_to_tt(long double mjd_in_utc)
 {
     int year, month, day, hour, minute;
-    double seconds;
+    long double seconds;
     mjd_to_utc(mjd_in_utc, &year, &month, &day, &hour, &minute, &seconds);
-    double deltaT = get_deltaT(year, month);
+    long double deltaT = get_deltaT(year, month);
 
     return mjd_in_utc + (deltaT / 86400);
 }
 
 
-double tt_to_tdb(double tt)
+long double tt_to_tdb(long double tt)
 {
-    double d = (tt - 51544.5) / 36525;
-    double g = (M_PI / 180) * (357.258 + 35999.050 * d);
-    return tt + ((0.00168*sin(g+0.0167*sin(g)))/86400);
+    long double d = (tt - 51544.5) / 36525;
+    long double g = (M_PI / 180) * (357.258 + 35999.050 * d);
+    return tt + ((0.00168*sinl(g+0.0167*sinl(g)))/86400);
 
-//    double mjd = utc_to_mjd(2003, 3, 7, 2, 45, 0.0);
-//    double t = (mjd + 2400000.5 - 2451545.0) / 36525.0;
-//    double dtr = M_PI / 180;
-//    double corr;
+//    long double mjd = utc_to_mjd(2003, 3, 7, 2, 45, 0.0);
+//    long double t = (mjd + 2400000.5 - 2451545.0) / 36525.0;
+//    long double dtr = M_PI / 180;
+//    long double corr;
 //    corr = 1656.675     * sin(dtr * (35999.3729 * t + 357.5287))
 //           + 22.418     * sin(dtr * (32964.467  * t + 246.199))
 //           + 13.84      * sin(dtr * (71998.746  * t + 355.057))
@@ -106,21 +106,21 @@ double tt_to_tdb(double tt)
 }
 
 
-double utc_to_gmst(double utc_in_mjd, double delta_ut)
+long double utc_to_gmst(long double utc_in_mjd, long double delta_ut)
 {
-    double ts = utc_in_mjd + delta_ut / 86400;
-    double ts_trunc = trunc(ts);
-    double s = ts - ts_trunc;
-    double tu = (trunc(ts) - 51544.5) / 36525;
-    double s0 = 1.753368559233266 + (628.3319706888409
+    long double ts = utc_in_mjd + delta_ut / 86400;
+    long double ts_trunc = truncl(ts);
+    long double s = ts - ts_trunc;
+    long double tu = (truncl(ts) - 51544.5) / 36525;
+    long double s0 = 1.753368559233266 + (628.3319706888409
                 + (6.770713944903336e-06 - 4.508767234318685e-10*tu)*tu)*tu;
-    double freq = 1.002737909350795
+    long double freq = 1.002737909350795
                   + (5.900575455674703e-11 - 5.893984333409384e-15*tu)*tu;
     s0 += freq*s*PI2;
-    double r = s0 / (PI2);
-    double i = trunc(r);
+    long double r = s0 / (PI2);
+    long double i = truncl(r);
 
-    double gmst = s0 - PI2*i;
+    long double gmst = s0 - PI2*i;
     if (gmst < 0)
     {
         gmst += PI2;
@@ -130,50 +130,50 @@ double utc_to_gmst(double utc_in_mjd, double delta_ut)
 }
 
 
-double utc_to_gast(int year, int month, int day, int hour,
-                   int minute, double second, double delta_ut)
+long double utc_to_gast(int year, int month, int day, int hour,
+                   int minute, long double second, long double delta_ut)
 {
-    double mjd = utc_to_mjd(year, month, day, hour, minute, second);
-    double tt = utc_to_tt(year, month, day, hour, minute, second);
-    double tdb = tt_to_tdb(tt);
+    long double mjd = utc_to_mjd(year, month, day, hour, minute, second);
+    long double tt = utc_to_tt(year, month, day, hour, minute, second);
+    long double tdb = tt_to_tdb(tt);
 
-    double eps = get_eps_mean(tdb);
+    long double eps = get_eps_mean(tdb);
 
-    double delta_psi, delta_eps;
+    long double delta_psi, delta_eps;
     get_nutation_parameters(tdb, &delta_psi, &delta_eps);
 
-    double gmst = utc_to_gmst(mjd, delta_ut);
+    long double gmst = utc_to_gmst(mjd, delta_ut);
 
-    return gmst + delta_psi*cos(eps);
+    return gmst + delta_psi*cosl(eps);
 }
 
 
-double mjd_to_gast(double utc_in_mjd, double delta_ut)
+long double mjd_to_gast(long double utc_in_mjd, long double delta_ut)
 {
-    double tt = mjd_to_tt(utc_in_mjd);
-    double tdb = tt_to_tdb(tt);
+    long double tt = mjd_to_tt(utc_in_mjd);
+    long double tdb = tt_to_tdb(tt);
 
-    double eps = get_eps_mean(tdb);
+    long double eps = get_eps_mean(tdb);
 
-    double delta_psi, delta_eps;
+    long double delta_psi, delta_eps;
     get_nutation_parameters(tdb, &delta_psi, &delta_eps);
 
-    double gmst = utc_to_gmst(utc_in_mjd, delta_ut);
+    long double gmst = utc_to_gmst(utc_in_mjd, delta_ut);
 
-    return gmst + delta_psi*cos(eps);
+    return gmst + delta_psi*cosl(eps);
 }
 
 
-void days_to_hms(double days, int *nhour, int *nminute, double *nsecond)
+void days_to_hms(long double days, int *nhour, int *nminute, long double *nsecond)
 {
-    double hour, minute;
-    double hours, minutes, seconds;
+    long double hour, minute;
+    long double hours, minutes, seconds;
 
     hours = days * 24;
-    hours = modf(hours, &hour);
+    hours = modfl(hours, &hour);
 
     minutes = hours * 60;
-    minutes = modf(minutes, &minute);
+    minutes = modfl(minutes, &minute);
 
     seconds = minutes * 60;
 
@@ -184,7 +184,7 @@ void days_to_hms(double days, int *nhour, int *nminute, double *nsecond)
     return;
 }
 
-double get_deltaT(int nyear, int nmonth)
+long double get_deltaT(int nyear, int nmonth)
 {
     int N = 0;
     switch(nyear)
@@ -230,6 +230,7 @@ double get_deltaT(int nyear, int nmonth)
             break;
         case 1985:
             N = (0 < nmonth && nmonth < 7) ? 22 : 23;
+            break;
         case 1986:
         case 1987:
             N = 23;

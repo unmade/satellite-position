@@ -19,7 +19,7 @@
  * @param[out] z Угловая переменная z(t)
  *
  */
-void get_precession_parameters(double tdb, double *zeta, double *theta, double *z);
+void get_precession_parameters(long double tdb, long double *zeta, long double *theta, long double *z);
 
 
 /**
@@ -30,4 +30,4 @@ void get_precession_parameters(double tdb, double *zeta, double *theta, double *
  * @param[out] precession_matrix Матрица прецессии
  *
  */
-void get_precession_matrix(double tdb, double precession_matr[3][3]);
+void get_precession_matrix(long double tdb, long double precession_matr[3][3]);

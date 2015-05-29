@@ -16,7 +16,7 @@
  * @param[out] matr Матрица поворота
  *
  */
-void rotate_by_x(double a, double matr[3][3]);
+void rotate_by_x(long double a, long double matr[3][3]);
 
 
 /**
@@ -26,7 +26,7 @@ void rotate_by_x(double a, double matr[3][3]);
  * @param[out] matr Матрица поворота
  *
  */
-void rotate_by_y(double a, double matr[3][3]);
+void rotate_by_y(long double a, long double matr[3][3]);
 
 
 /**
@@ -36,7 +36,7 @@ void rotate_by_y(double a, double matr[3][3]);
  * @param[out] matr Матрица поворота
  *
  */
-void rotate_by_z(double a, double matr[3][3]);
+void rotate_by_z(long double a, long double matr[3][3]);
 
 
 /**
@@ -46,9 +46,9 @@ void rotate_by_z(double a, double matr[3][3]);
  * @param[out] matr Матрица поворота
  *
  */
-void get_earth_rotation_matrix(double gast, double matr[3][3]);
+void get_earth_rotation_matrix(long double gast, long double matr[3][3]);
 
 
-//double** rotate_by_y(double a);
+//long double** rotate_by_y(long double a);
 
-//void destroyArray(double** arr);
+//void destroyArray(long double** arr);

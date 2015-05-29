@@ -16,7 +16,7 @@
  * @param[out] c Матрица, содержащая результат произведения a*b
  *
  */
-void mult_matrix(double a[3][3], double b[3][3], double c[3][3]);
+void mult_matrix(long double a[3][3], long double b[3][3], long double c[3][3]);
 
 
 /**
@@ -27,7 +27,7 @@ void mult_matrix(double a[3][3], double b[3][3], double c[3][3]);
  * @param[out] res Результат произведения (вектор)
  *
  */
-void mult_matrix_by_vector(double matr[3][3], double vec[3], double res[3]);
+void mult_matrix_by_vector(long double matr[3][3], long double vec[3], long double res[3]);
 
 
 /**
@@ -49,4 +49,4 @@ void transpose(void *dest, void *src, int src_h, int src_w);
  * @param[in] *matrix Указатель на матрицу, которую нужно вывести на печать
  *
  */
-void print_matrix(int n, int m, double *matrix);
+void print_matrix(int n, int m, long double *matrix);

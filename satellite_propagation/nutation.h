@@ -14,7 +14,7 @@
  *
  *  @return Числовое значение ε(t)
  */
-double get_eps_mean(double tdb);
+long double get_eps_mean(long double tdb);
 
 
 /**
@@ -24,7 +24,17 @@ double get_eps_mean(double tdb);
  * @param[out] fund_args[5] Массив с фундаментальными аргументами.
  * Фундаментальные аргументы идут в следующем порядке: λ(t), l(t), l'(t), F(t), D(t)
  */
-void get_fundumental_args(double tdb, double fund_args[5]);
+void get_fundumental_args(long double tdb, long double fund_args[5]);
+
+
+/**
+ * Вычисляет скорректированные числовые значения фундаментальных аргументов
+ *
+ * @param[in] tdb Момент времени в шкале барицентрического динамического времени
+ * @param[out] corr_fund_args[5] Массив с фундаментальными аргументами.
+ * Фундаментальные аргументы идут в следующем порядке: λ(t), l(t), l'(t), F(t), D(t)
+ */
+void get_corr_fundumental_args(long double tdb, long double corr_fund_args[5]);
 
 
 /**
@@ -35,7 +45,7 @@ void get_fundumental_args(double tdb, double fund_args[5]);
  * @param[out] eps Нутация в наклоне
  *
  */
-void get_nutation_parameters(double tdb, double *psi, double *eps);
+void get_nutation_parameters(long double tdb, long double *psi, long double *eps);
 
 
 /**
@@ -45,4 +55,4 @@ void get_nutation_parameters(double tdb, double *psi, double *eps);
  * @param[out] nutation_matrix[3][3] Матрица нутации
  *
  */
-void get_nutation_matrix(double tdb, double nutation_matrix[3][3]);
+void get_nutation_matrix(long double tdb, long double nutation_matrix[3][3]);

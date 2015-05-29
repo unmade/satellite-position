@@ -8,6 +8,6 @@
 
 #endif //SATELLITE_PROPAGATION_GRAVITATIONAL_POTENTIAL_H
 
-void calc(double xc, double yc, double zc,
-          double utc_in_mjd,
-          double *Fx, double *Fy, double *Fz);
+void calc(long double xc, long double yc, long double zc,
+          long double utc_in_mjd,
+          long double *Fx, long double *Fy, long double *Fz);

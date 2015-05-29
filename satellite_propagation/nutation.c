@@ -2,55 +2,110 @@
 // Created by Леша on 24.05.15.
 //
 
+#include <stdio.h>
 #include "nutation.h"
 #include "constants.h"
 #include "rotation_matrix.h"
 #include "matrix_operations.h"
 
 
-double get_eps_mean(double tdb)
+long double get_eps_mean(long double tdb)
 {
-    double ts = (tdb - 51544.5) / 36525;
-    double ts2 = ts*ts;
-    double ts3 = ts*ts2;
-    return SEC_IN_RAD*(84381.448-46.8150*ts-0.00059*ts2+0.001813*ts3);
+    long double ts = (tdb - 51544.5) / 36525;
+    long double ts2 = ts*ts;
+    long double ts3 = ts*ts2;
+    return SEC_IN_RAD*(84381.448 - 46.8150*ts - 0.00059*ts2 + 0.001813*ts3);
 }
 
 
-void get_fundumental_args(double tdb, double fund_args[5])
+long double grad_to_sec(int rad, int grad, int minute, double sec)
 {
-    double ts = (tdb - 51544.5) / 36525;
-    double ts2 = ts*ts;
-    double ts3 = ts*ts2;
+    return rad*1296000 + grad*3600 + minute*60 + sec;
+}
 
-    fund_args[0] = 218.31643250 + 481267.8812772222*ts
-                   - 0.00161167*ts2 + 0.00000528*ts3;
-    fund_args[1] = 134.96298139 + 477198.8673980556*ts
-                   + 0.00869722*ts2 + 0.00001778*ts3;
-    fund_args[2] = 357.52772333 + 35999.05034*ts
-                   - 0.00016028*ts2 - 0.00000333*ts;
-    fund_args[3] = 93.27191028 + 483202.0175380555*ts
-                   - 0.00368250*ts2 + 0.00000306*ts3;
-    fund_args[4] = 297.85036306 + 445267.11148*ts
-                   - 0.00191417*ts2 + 0.00000528*ts3;
+
+void get_fundumental_args(long double tdb, long double fund_args[5])
+{
+    long double dt = (tdb - 51544.5) / 36525.0;
+    long double dt2 = dt*dt;
+    long double dt3 = dt*dt2;
+//    long double dt4 = dt*dt3;
+
+//    long double sec_in_grad = 3600;
+//    fund_args[0] = 134.96340251
+
+
+
+    fund_args[0] = 218.31643250e0+481267.8812772222e0*dt
+                -0.00161167e0*dt2+0.00000528e0*dt3;
+    fund_args[1] = 134.96298139e0+477198.8673980556e0*dt
+                +0.00869722e0*dt2+0.00001778e0*dt3;
+    fund_args[2] = 357.52772333e0+35999.05034e0*dt
+                -0.00016028e0L*dt2-0.00000333e0*dt3;
+    fund_args[3] = 93.27191028e0+483202.0175380555e0*dt
+                 -0.00368250e0*dt2+0.00000306e0*dt3;
+    fund_args[4] = 297.85036306e0+445267.11148e0*dt
+                -0.00191417e0*dt2+0.00000528e0*dt3;
+
+//    fund_args[0] = (grad_to_sec(0, 125, 2, 40.280) - grad_to_sec(5, 134, 8, 10.539)*dt + 7.455*dt2 - 0.008*dt3) / SEC_IN_GRAD;
+//    fund_args[0] = (125.04455501*SEC_IN_GRAD - 6962890.2665*dt + 7.4722*dt2 + 0.007702*dt3 - 0.00005939*dt3*dt) / SEC_IN_GRAD;
+//    fund_args[1] = (grad_to_sec(0, 134, 57, 46.733) + grad_to_sec(1325, 198, 52, 2.633)*dt + 31.31*dt2 + 0.064*dt3) / SEC_IN_GRAD;
+//    fund_args[2] = (grad_to_sec(0, 357, 31, 39.804) + grad_to_sec(99, 359, 3, 1.224)*dt - 0.577*dt2 - 0.012*dt3) / SEC_IN_GRAD;
+//    fund_args[3] = (grad_to_sec(0, 93, 16, 18.877) + grad_to_sec(1342, 82, 1, 3.137)*dt - 13.257*dt2 + 0.011*dt3) / SEC_IN_GRAD;
+//    fund_args[4] = (grad_to_sec(0, 297, 51, 1.307) + grad_to_sec(1236, 307, 6, 41.328)*dt - 6.891*dt2 + 0.019*dt3) / SEC_IN_GRAD;
+
+//    fund_args[0] = (grad_to_sec(0, 125, 2, 40.280) - grad_to_sec(5, 134, 8, 10.539)*dt + 7.455*dt2 - 0.008*dt3) / SEC_IN_GRAD;
+//    fund_args[0] = (125.04455501*SEC_IN_GRAD - 6962890.2665*dt + 7.4722*dt2 + 0.007702*dt3 - 0.00005939*dt3*dt) / SEC_IN_GRAD;
+//    fund_args[1] = (grad_to_sec(0, 134, 57, 46.733) + grad_to_sec(1325, 198, 52, 2.633)*dt + 31.31*dt2 + 0.064*dt3) / SEC_IN_GRAD;
+//    fund_args[2] = (grad_to_sec(0, 357, 31, 39.804) + grad_to_sec(99, 359, 3, 1.224)*dt - 0.577*dt2 - 0.012*dt3) / SEC_IN_GRAD;
+//    fund_args[3] = (grad_to_sec(0, 93, 16, 18.877) + grad_to_sec(1342, 82, 1, 3.137)*dt - 13.257*dt2 + 0.011*dt3) / SEC_IN_GRAD;
+//    fund_args[4] = (1072261.307 + 1602961601.328*dt - 6.891*dt2 + 0.019*dt3) / SEC_IN_GRAD;
+//    fund_args[4] = 297.8503630555556 + 445267.11148*dt - 0.0019141666666666667*dt2 + 5.277777777777778e-06*dt3;
+
 
     int i;
-    double r, l;
-    for (i=0; i<5; i++)
+    long double r, l;
+    for (i = 0; i < 5; i++)
     {
         r = fund_args[i];
-        l = trunc(r / 360);
-        fund_args[i] = GRAD_IN_RAD * (r - 360*l);
+        l = truncl(r / 360.0);
+//        printf("%Lf\n", l);
+        fund_args[i] = (GRAD_IN_RAD) * (r - 360.0*l);
     }
 
     return;
 }
 
 
-void get_nutation_parameters(double tdb, double *psi, double *eps)
+void get_corr_fundumental_args(long double tdb, long double corr_fund_args[5])
+{
+    long double s[7];
+    long double ts, dr;
+
+    get_fundumental_args(tdb, corr_fund_args);
+    
+    ts = (tdb - 51544.5L) / 36525.0L;
+    s[0] = sinl(1.24614L + 0.35255L*ts);
+    s[1] = sinl(1.75106L + 0.28325L*ts);
+    s[2] = sinl(1.05727L - 2.31868L*ts);
+    s[3] = sinl(2.18240L - 33.7571L*ts);
+    s[4] = sinl(0.65961L - 33.79719L*ts);
+    s[5] = sinl(2.68173L - 2.62983L*ts);
+    s[6] = sinl(0.93890L - 33.77281L*ts);
+
+    dr = 0.31L*s[1] + 14.27L*s[2];
+    corr_fund_args[0] += SEC_IN_RAD*(0.84L*s[0] + dr + 7.26L*s[3] + 0.28L*s[4] + 0.24L*s[5]); // { lambda rd }
+    corr_fund_args[1] += SEC_IN_RAD*(2.94L*s[0] + dr + 9.34L*s[3]+1.12L*s[4] + 0.83L*s[5]); // { l  radian }
+    corr_fund_args[2] -= SEC_IN_RAD*(6.4L*s[0] + 1.89L*s[5]);                     // { l' radian }
+    corr_fund_args[3] += SEC_IN_RAD*(0.21L*s[0]+dr-88.7L*s[3]-15.3L*s[4] + 0.24L*s[5] - 1.86L*s[6]); // { F }
+    corr_fund_args[4] +=SEC_IN_RAD*(7.24L*s[0]+dr + 7.26L*s[3] + 0.28L*s[4]+2.13L*s[5]);  // { D  radian }
+}
+
+
+void get_nutation_parameters(long double tdb, long double *psi, long double *eps)
 {
     // 1980 IAU Theory of Nutation  ( J. M. Wahr )
-    int nut_args[106][5] =
+   short nut_args[106][5] =
           { {   1 ,    0 ,    0 ,    0 ,    0 } ,
             {   2 ,    0 ,    0 ,    0 ,    0 } ,
             {   1 ,   -2 ,    0 ,    2 ,    0 } ,
@@ -159,7 +214,7 @@ void get_nutation_parameters(double tdb, double *psi, double *eps)
             {   0 ,    0 ,    1 ,    0 ,    1 } } ;
     
     // 1980 IAU Theory of Nutation  ( J. M. Wahr )
-    double nut_coeff[106][4] =
+    float nut_coeff[106][4] =
           { {   -17.199600 ,     -0.017420 ,      9.202500 ,      0.000890 } ,
             {     0.206200 ,      0.000020 ,     -0.089500 ,      0.000050 } ,
             {     0.004600 ,      0.000000 ,     -0.002400 ,      0.000000 } ,
@@ -267,14 +322,20 @@ void get_nutation_parameters(double tdb, double *psi, double *eps)
             {    -0.000100 ,      0.000000 ,      0.000000 ,      0.000000 } ,
             {     0.000100 ,      0.000000 ,      0.000000 ,      0.000000 } } ;
 
-    double ts = (tdb - 51544) / 36525;
-    double delta_psi = 0, delta_eps = 0;
+    long double ts = (tdb - 51544.5) / 36525;
+    long double delta_psi = 0, delta_eps = 0;
     int i, j;
 
-    double fund_args[5];
+    long double fund_args[5];
     get_fundumental_args(tdb, fund_args);
 
-    double r = 0;
+//    fund_args[0] = 3.168269813460301;
+//    fund_args[1] = 6.065905055474972;
+//    fund_args[2] = 2.551033053603387;
+//    fund_args[3] = 1.593610412001011;
+//    fund_args[4] = 1.956089905457110;
+
+    long double r = 0;
     for (i=0; i<106; i++)
     {
         r = nut_args[i][0] * (fund_args[0] - fund_args[3]);
@@ -282,8 +343,8 @@ void get_nutation_parameters(double tdb, double *psi, double *eps)
         {
             r += nut_args[i][j] * fund_args[j];
         }
-        delta_psi += (nut_coeff[i][0] + ts*nut_coeff[i][1]) * sin(r);
-        delta_eps += (nut_coeff[i][2] + ts*nut_coeff[i][3]) * cos(r);
+        delta_psi += (nut_coeff[i][0] + ts*nut_coeff[i][1]) * sinl(r);
+        delta_eps += (nut_coeff[i][2] + ts*nut_coeff[i][3]) * cosl(r);
     }
     *psi = delta_psi * SEC_IN_RAD;
     *eps = delta_eps * SEC_IN_RAD;
@@ -292,14 +353,17 @@ void get_nutation_parameters(double tdb, double *psi, double *eps)
 }
 
 
-void get_nutation_matrix(double tdb, double nutation_matrix[3][3])
+void get_nutation_matrix(long double tdb, long double nutation_matrix[3][3])
 {
-    double eps = get_eps_mean(tdb);
+    long double eps = get_eps_mean(tdb);
 
-    double delta_psi, delta_eps;
+    long double delta_psi, delta_eps;
     get_nutation_parameters(tdb, &delta_psi, &delta_eps);
 
-    double Rx_deps[3][3], Rz_psi[3][3], Rx_eps[3][3], R[3][3];
+//    delta_psi = 0.000067717028675;
+//    delta_eps = 0.000021366313022;
+
+    long double Rx_deps[3][3], Rz_psi[3][3], Rx_eps[3][3], R[3][3];
     rotate_by_x(-eps-delta_eps, Rx_deps);
     rotate_by_z(-delta_psi, Rz_psi);
     rotate_by_x(eps, Rx_eps);
