@@ -97,9 +97,7 @@ void get_xy_and_dxy(long double x, long double y, long double r,
 }
 
 
-void calc(long double xc, long double yc, long double zc,
-          long double utc_in_mjd,
-          long double *Fx, long double *Fy, long double *Fz)
+void calc(long double xc, long double yc, long double zc, long double utc_in_mjd, long double acceleration[3])
 {
     long double precession_matrix[3][3], nutation_matrix[3][3],
            earth_rotation_matrix[3][3], m_ct[3][3], coord_matrix[3];
@@ -148,7 +146,9 @@ void calc(long double xc, long double yc, long double zc,
 
     int n, k;
     int harm_index = 0;
-    long double Q, dQ_xr, dQ_yr, unk_x = 0, unk_y = 0, unk_z = 0;
+    long double Q, dQ_xr, dQ_yr;
+    long double u[3];
+    u[0] = u[1] = u[2] = 0;
     for (n = 2; n <= N_MAX; n++)
     {
         for (k = 0; k <= n; k++)
@@ -166,22 +166,31 @@ void calc(long double xc, long double yc, long double zc,
 
             Q = ctes[harm_index] * X[k] + stes[harm_index] * Y[k];
 
-            unk_x += dR[n] * drx * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzrx * Q
+            u[0] += dR[n] * drx * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzrx * Q
                     + R[n] * Z[n][k] * (dQ_xr * dxrx + dQ_yr * dyrx);
-            unk_y += dR[n] * dry * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzry * Q
+            u[1] += dR[n] * dry * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzry * Q
                      + R[n] * Z[n][k] * (dQ_xr * dxry + dQ_yr * dyry);
-            unk_z += dR[n] * drz * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzrz * Q
+            u[2] += dR[n] * drz * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzrz * Q
                      + R[n] * Z[n][k] * (dQ_xr * dxrz + dQ_yr * dyrz);
 
             ++harm_index;
         }
     }
 
-//    *Fx = -FM * (x/r3);// + unk_x;
-//    *Fy = -FM * (y/r3);// + unk_y;
-//    *Fz = -FM * (z/r3);// + unk_z;
-    *Fx = unk_x;
-    *Fy = unk_y;
-    *Fz = unk_z;
+    u[0] += -FM * (x/r3);
+    u[1] += -FM * (y/r3);
+    u[2] += -FM * (z/r3);
+    long double m_tc[3][3];
+
+    terra_to_fixed(m_ct, m_tc);
+    mult_matrix_by_vector(m_tc, u, acceleration);
+
+
+//    *Fx = unk_x;
+//    *Fy = unk_y;
+//    *Fz = unk_z;
+
+
+
     return;
 }

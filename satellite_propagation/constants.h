@@ -5,7 +5,6 @@
 #ifndef SATELLITE_PROPAGATION_CONSTANTS_H
 #define SATELLITE_PROPAGATION_CONSTANTS_H
 #include <math.h>
-#endif //SATELLITE_PROPAGATION_CONSTANTS_H
 
 static long double const PI2 = 2 * (long double)M_PI; ///< π умноженное на два
 static long double const SEC_IN_RAD = (2 * (long double)M_PI) / 1296000.0L; ///< Кол-во секунд в радиане
@@ -15,6 +14,12 @@ static long double const SEC_IN_GRAD = 3600; ///< Кол-во угловых с�
 
 static long double const FM = 3.986004415e5L; ///< Геоцентрическая гравитационная постоянная [км^3 / с^2]
 static long double const R0 = 6.378136300e3L; ///< Экваториальный радиус Земли [км]
+static long double const AU = 149597870.691L; ///< 1 а.е.
+
+static long double const FM_M = 4.902799e03L; ///< Гравитационная постоянная на массу Луны [км^3 / с^2]
+static long double const FM_S = 1.32712438e11L; ///< Гравитационная постоянная на массу Солнца [км^3 / с^2]
+static long double const P0 = 4.5606e-06L; ///< Давление солнечного света на среднем расстоянии Земли от Солнца [н / м^2]
+
 static long double const N_MAX = 12; ///< Порядок, до которого учитываются гармоники
 
 
@@ -223,7 +228,7 @@ static long double const stes[88] =
                 -9.83829860e-20L    // { 12  12 }
         };
 
-
+#endif //SATELLITE_PROPAGATION_CONSTANTS_H
 
 
 

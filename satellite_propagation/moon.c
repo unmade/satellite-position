@@ -6,6 +6,35 @@
 #include "moon.h"
 #include "nutation.h"
 #include "constants.h"
+#include "coordinates_converters.h"
+#include "rotation_matrix.h"
+#include "matrix_operations.h"
+#include "precession.h"
+
+
+void get_moon_celestial_position(long double tdb, long double coordinates[3])
+{
+    long double l, b, r;
+    long double xe[3];
+    long double eps;
+    long double Rx[3][3];
+    long double precession[3][3], m_pt[3][3], R[3][3];
+
+    get_moon_ecliptic_position(tdb, &l, &b, &r);
+    spherical_to_cartesian(l, b, r, xe);
+
+    eps = get_eps_mean(tdb);
+
+    rotate_by_x(-eps, Rx);
+
+    get_precession_matrix(tdb, precession);
+    transpose(m_pt, precession, 3, 3);
+
+    mult_matrix(m_pt, Rx, R);
+    mult_matrix_by_vector(R, xe, coordinates);
+
+    return;
+}
 
 
 void get_moon_ecliptic_position(long double tdb, long double *l, long double *b, long double *r)

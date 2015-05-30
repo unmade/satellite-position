@@ -21,4 +21,4 @@ void get_moon_ecliptic_position(long double tdb, long double *l, long double *b,
 
 
 
-//void get_moon_position_in_celestrial(long double tdb);
+void get_moon_celestial_position(long double tdb, long double coordinates[3]);
