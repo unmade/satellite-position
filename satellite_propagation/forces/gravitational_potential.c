@@ -2,35 +2,15 @@
 // Created by Леша on 25.05.15.
 //
 
-#include <stdio.h>
 #include "gravitational_potential.h"
 #include "../constants.h"
 #include "../coordinates_converters.h"
-#include "../date_converters/date_converters.h"
-#include "../precession.h"
-#include "../nutation.h"
-#include "../rotation_matrix.h"
 #include "../matrix_operations.h"
-
-
-void get_r_and_dr(long double r, long double res_R[13], long double res_dR[13])
-{
-    long double R0_r = R0 / r;
-    res_R[0] = res_R[1] = res_dR[0] = res_dR[1] = 0;
-    res_R[2] = (FM / r) * powl(R0_r, 2);
-    res_dR[2] = 3*FM * powl(R0_r, 2);
-
-    int n;
-    for (n = 3; n <= N_MAX; n++)
-    {
-        res_R[n] = res_R[n -1] * R0_r;
-        res_dR[n] = (n + 1) * FM * powl(R0_r, n);
-    }
-}
 
 
 void get_z_and_dz(long double z, long double r, long double Z[13][13], long double dZ[13][13])
 {
+    long double zr;
     int n, k;
     for (n = 0; n <= N_MAX; n++)
     {
@@ -40,18 +20,18 @@ void get_z_and_dz(long double z, long double r, long double Z[13][13], long doub
             dZ[n][k] = 0;
         }
     }
-    Z[0][0] = dZ[0][0] = 0;
-    Z[1][0] = z / r;
+
+    zr = z / r;
+    Z[1][0] = zr;
     dZ[1][0] = 1;
-    Z[2][0] = 1.5 * powl(z/r, 2) - 0.5;
-    dZ[2][0] = 3* (z / r);
+    Z[2][0] = 1.5 * powl(zr, 2) - 0.5;
+    dZ[2][0] = 3 * (zr);
 
 
     for (n = 3; n <= N_MAX; n++)
     {
-//        Z[n][0] = ((2*n - 1)/n)*(z/r)*Z[n-1][0] - ((n - 1) / n) * Z[n-2][0];
         Z[n][0] = (2*n - 1)*z / (n*r) * Z[n-1][0] - (n-1)*Z[n-2][0] / n;
-        dZ[n][0] = n * Z[n-1][0] + (z/r) * dZ[n-1][0];
+        dZ[n][0] = n * Z[n-1][0] + zr * dZ[n-1][0];
     }
 
     for (k = 1; k <= N_MAX; k++)
@@ -59,10 +39,6 @@ void get_z_and_dz(long double z, long double r, long double Z[13][13], long doub
         for (n = 1; n <= N_MAX; n++)
         {
             Z[n][k] = dZ[n][k-1];
-        }
-        for (n = 1; n <= k; n++)
-        {
-            dZ[n][k] = 0;
         }
         for (n = k + 1; n <= N_MAX; n++)
         {
@@ -97,100 +73,91 @@ void get_xy_and_dxy(long double x, long double y, long double r,
 }
 
 
-void calc(long double xc, long double yc, long double zc, long double utc_in_mjd, long double acceleration[3])
+void get_acceleration_by_earth(long double utc_in_mjd,
+                               long double xc, long double yc, long double zc,
+                               long double acceleration[3])
 {
-    long double precession_matrix[3][3], nutation_matrix[3][3],
-           earth_rotation_matrix[3][3], m_ct[3][3], coord_matrix[3];
+    long double m_ct[3][3], m_tc[3][3],  // матрицы перехода между земной и небесной СК
+                celestial_coord[3], terrestrial_coord[3];
 
-    long double tdb = tt_to_tdb(mjd_to_tt(utc_in_mjd));
-    long double gast = mjd_to_gast(utc_in_mjd, 0.0);
+    long double x, y, z; // координаты в земной (прямоугольной) СК
 
-    get_precession_matrix(tdb, precession_matrix);
-    get_nutation_matrix(tdb, nutation_matrix);
-    get_earth_rotation_matrix(gast, earth_rotation_matrix);
-    fixed_to_terra(precession_matrix, nutation_matrix, earth_rotation_matrix, m_ct);
+    long double r, r1, r3,
+                drx,  dry,  drz,
+                dxrx, dxry, dxrz,
+                dyrx, dyry, dyrz,
+                dzrx, dzry, dzrz;
 
-    long double coord[3];
-    coord[0] = xc; coord[1] = yc; coord[2] = zc;
-    mult_matrix_by_vector(m_ct, coord, coord_matrix);
-    long double x = coord_matrix[0],
-                y = coord_matrix[1],
-                z = coord_matrix[2];
+    long double Z[13][13], dZ[13][13],
+                X[13], dX_xr[13], dX_yr[13],
+                Y[13], dY_xr[13], dY_yr[13],
+                Q, dQ_xr, dQ_yr;
 
-    long double r, r3, drx,  dry,  drz,
-                  dxrx, dxry, dxrz,
-                  dyrx, dyry, dyrz,
-                  dzrx, dzry, dzrz;
+    long double R0_r, R, dR;
+
+    int n, k, harm_index;
+    long double u[3];
+
+    get_fixed_to_terra_matrix(utc_in_mjd, m_ct);
+    celestial_coord[0] = xc; celestial_coord[1] = yc; celestial_coord[2] = zc;
+    mult_matrix_by_vector(m_ct, celestial_coord, terrestrial_coord);
+
+    x = terrestrial_coord[0],
+    y = terrestrial_coord[1],
+    z = terrestrial_coord[2];
 
     r = sqrtl(x*x + y*y + z*z);
+    r1 = 1 / r;
     r3 = powl(r, 3);
-
+    
     // ∂(1/r) / ∂x          ∂(1/r) / ∂y             ∂(1/r) / ∂z
     drx = -x/r3;            dry = -y/r3;            drz = -z/r3;
-
     //∂(x/r) / ∂x           ∂(x/r) / ∂y             ∂(x/r) / ∂z
-    dxrx = 1/r - (x*x) / r3;  dxry = -(x*y) / r3;       dxrz = -(x*z) / r3;
-
+    dxrx = r1 - x*x/r3;     dxry = -x*y / r3;       dxrz = -x*z / r3;
     // ∂(y/r) / ∂x          ∂(y/r) / ∂y             ∂(y/r) / ∂z
-    dyrx = -(x*y) / r3;       dyry = 1/r - (y*y)/r3;    dyrz = -(y*z) / r3;
-
+    dyrx = -x*y / r3;       dyry = r1 - y*y/r3;     dyrz = -y*z / r3;
     // ∂(z/r) / ∂x          ∂(z/r) / ∂y             ∂(z/r) / ∂z
-    dzrx = -(x*z) / r3;       dzry = -(y*z) / r3;       dzrz = 1/r - (z*z) / r3;
+    dzrx = -x*z / r3;       dzry = -y*z / r3;       dzrz = r1 - z*z/r3;
 
 
-    long double R[13], dR[13], Z[13][13], dZ[13][13], X[13], dX_xr[13], dX_yr[13],
-            Y[13], dY_xr[13], dY_yr[13];
-    get_r_and_dr(r, R, dR);
+    R0_r = R0 / r;
+    R = (FM / r) * powl(R0_r, 2);
+    dR = 3*FM * powl(R0_r, 2);
+
     get_z_and_dz(z, r, Z, dZ);
     get_xy_and_dxy(x, y, r, X, dX_xr, dX_yr, Y, dY_xr, dY_yr);
 
-    int n, k;
-    int harm_index = 0;
-    long double Q, dQ_xr, dQ_yr;
-    long double u[3];
     u[0] = u[1] = u[2] = 0;
+
+    harm_index = 0;
     for (n = 2; n <= N_MAX; n++)
     {
         for (k = 0; k <= n; k++)
         {
-//            printf("n = %d k = %d ind = %d \n harm_ind = %2.20Lf\n\n", n, k, harm_index, ctes[harm_index]);
-            if (k == 0)
-            {
-                dQ_xr = dQ_yr = 0;
-            }
-            else
-            {
-                dQ_xr = ctes[harm_index] * dX_xr[k] + stes[harm_index] * dY_xr[k];
-                dQ_yr = ctes[harm_index] * dX_yr[k] + stes[harm_index] * dY_yr[k];
-            }
+            dQ_xr = ctes[harm_index] * dX_xr[k] + stes[harm_index] * dY_xr[k];
+            dQ_yr = ctes[harm_index] * dX_yr[k] + stes[harm_index] * dY_yr[k];
 
             Q = ctes[harm_index] * X[k] + stes[harm_index] * Y[k];
 
-            u[0] += dR[n] * drx * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzrx * Q
-                    + R[n] * Z[n][k] * (dQ_xr * dxrx + dQ_yr * dyrx);
-            u[1] += dR[n] * dry * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzry * Q
-                     + R[n] * Z[n][k] * (dQ_xr * dxry + dQ_yr * dyry);
-            u[2] += dR[n] * drz * Z[n][k] * Q   +   R[n] * dZ[n][k] * dzrz * Q
-                     + R[n] * Z[n][k] * (dQ_xr * dxrz + dQ_yr * dyrz);
+            u[0] += dR * drx * Z[n][k] * Q   +   R * dZ[n][k] * dzrx * Q
+                    + R * Z[n][k] * (dQ_xr * dxrx + dQ_yr * dyrx);
+            u[1] += dR * dry * Z[n][k] * Q   +   R * dZ[n][k] * dzry * Q
+                    + R * Z[n][k] * (dQ_xr * dxry + dQ_yr * dyry);
+            u[2] += dR * drz * Z[n][k] * Q   +   R * dZ[n][k] * dzrz * Q
+                    + R * Z[n][k] * (dQ_xr * dxrz + dQ_yr * dyrz);
 
             ++harm_index;
         }
+        R *=  R0_r;
+        dR = (n + 2) * FM * powl(R0_r, n+1);
     }
 
-    u[0] += -FM * (x/r3);
-    u[1] += -FM * (y/r3);
-    u[2] += -FM * (z/r3);
-    long double m_tc[3][3];
+    u[0] = -FM * (x/r3);
+    u[1] = -FM * (y/r3);
+    u[2] = -FM * (z/r3);
 
-    terra_to_fixed(m_ct, m_tc);
+    get_terra_to_fixed_matrix(m_ct, m_tc);
     mult_matrix_by_vector(m_tc, u, acceleration);
-
-
-//    *Fx = unk_x;
-//    *Fy = unk_y;
-//    *Fz = unk_z;
-
-
 
     return;
 }

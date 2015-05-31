@@ -122,15 +122,15 @@ int main() {
 //
 //
 //    printf("\nМатрица перехода от средней подвижной экваториальной к небесной:\n");
-//    mean_equ_to_fixed(precession_matrix2, m_p);
+//    get_mean_equ_to_fixed_matrix(precession_matrix2, m_p);
 //    print_matrix(3, 3, (long double *)m_p);
 //
 //    printf("\nМатрица перехода от небесной к истинной экватриальной:\n");
-//    fixed_to_true_equ(precession_matrix2, nutation_matrix2, m_np);
+//    get_fixed_to_true_equ_matrix(precession_matrix2, nutation_matrix2, m_np);
 //    print_matrix(3, 3, (long double *)m_np);
 //
 //    printf("\nМатрица перехода от истинной экватриальной к небесной:\n");
-//    true_equ_to_fixed(m_np, m_pn);
+//    get_true_equ_to_fixed_matrix(m_np, m_pn);
 //    print_matrix(3, 3, (long double *)m_pn);
 //
 //    printf("\nМатрица перехода от небесной к земной:\n");
@@ -139,11 +139,11 @@ int main() {
 //    get_precession_matrix(tdb2, precession_matrix2);
 //    get_nutation_matrix(tdb2, nutation_matrix2);
 //    get_earth_rotation_matrix(gast2, earth_rotation_matrix2);
-//    fixed_to_terra(precession_matrix2, nutation_matrix2, earth_rotation_matrix2, m_ct);
+//    get_fixed_to_terra_matrix(precession_matrix2, nutation_matrix2, earth_rotation_matrix2, m_ct);
 //    print_matrix(3, 3, (long double *)m_ct);
 //
 //    printf("\nМатрица перехода от земной к небесной:\n");
-//    terra_to_fixed(m_ct, m_tc);
+//    get_terra_to_fixed_matrix(m_ct, m_tc);
 //    print_matrix(3, 3, (long double *)m_tc);
 
 //    printf("Положение Луны в эклиптических координатах:\n");
@@ -181,20 +181,11 @@ int main() {
 //    long double yc = -14681.359180;
 //    long double zc = 28808.336859;
 
-//    long double Fx, Fy, Fz;
+//    get_acceleration_by_earth(utc_in_mjd, xc, yc, zc, acceleration);
 
-//    long double sec_in_week = 7*24*60*60;
-//    long double c = 1/86400;
-//    int i;
-//    for (i=0; i < sec_in_week; i++) {
-//        calc(xc, yc, zc, utc_in_mjd, acceleration);
-//        utc_in_mjd += c;
-//        printf("\nFx = %2.15f\nFy = %2.15f\nFz = %2.15f\n\n", Fx * 1e6, Fy * 1e6, Fz * 1e6);
-//    }
 //    printf("\nFx = %2.9Lf\nFy = %2.9Lf\nFz = %2.9Lf\n\n", acceleration[0] * 1e6,
 //           acceleration[1] * 1e6, acceleration[2] * 1e6);
-//    int x;
-//    scanf("%d", &x);
+
 //    get_acceleration_by_moon(utc_in_mjd, xc, yc, zc, acceleration);
 //    printf("\nFx = %2.9Lf\nFy = %2.9Lf\nFz = %2.9Lf\n\n", acceleration[0] * 1e6,
 //           acceleration[1] * 1e6, acceleration[2] * 1e6);
@@ -205,22 +196,22 @@ int main() {
 
 
     long double start_date = utc_to_mjd(2015, 5, 14, 6, 0, 0);
-    long double end_date = utc_to_mjd(2015, 5, 21, 6, 0, 0);
+//    long double end_date = utc_to_mjd(2015, 5, 15, 6, 0, 0);
     long double pos[3], fin_pos[3], vel[3], fin_vel[3];
-//    long double pos_[3], vel_[3];
-    pos[0] = 33508.4071859207L;
-    pos[1] = 25585.7790086467L;
-    pos[2] = -493.907358861003L;
-    vel[0] = -1.86508722606082L;
-    vel[1] = 2.44434537660644L;
-    vel[2] = 0.0378635308063818L;
-//    start_date = 51865.0L;
-//    pos[0] = -43203.607000L;
-//    pos[1] = 932.853000L;
-//    pos[2] = 105.030000L;
-//    vel[0] = -0.108342L;
-//    vel[1] = -2.994434L;
-//    vel[2] = 0.062441L;
+
+//    pos[0] = 33508.4071859207L;
+//    pos[1] = 25585.7790086467L;
+//    pos[2] = -493.907358861003L;
+//    vel[0] = -1.86508722606082L;
+//    vel[1] = 2.44434537660644L;
+//    vel[2] = 0.0378635308063818L;
+    start_date = 51865.0L;
+    pos[0] = -43203.607000L;
+    pos[1] = 932.853000L;
+    pos[2] = 105.030000L;
+    vel[0] = -0.108342L;
+    vel[1] = -2.994434L;
+    vel[2] = 0.062441L;
 //    pos_[0] = 33508.4071859207L;
 //    pos_[1] = 25585.7790086467L;
 //    pos_[2] = -493.907358861003L;
@@ -228,41 +219,23 @@ int main() {
 //    vel_[1] = 2.44434537660644L;
 //    vel_[2] = 0.0378635308063818L;
 
-//    terra_to_fixed(pos);
-//
-//    long double precession[3][3];
-//    long double nutation[3][3];
-//    long double earth_rotation[3][3];
-//    long double m_ct[3][3], m_tc[3][3];
-//
-//    get_precession_matrix(tt_to_tdb(mjd_to_tt(start_date)), precession);
-//    get_nutation_matrix(tt_to_tdb(mjd_to_tt(start_date)), nutation);
-//    get_earth_rotation_matrix(mjd_to_gast(start_date, 0.0), earth_rotation);
-//    fixed_to_terra(precession, nutation, earth_rotation, m_ct);
-//    terra_to_fixed(m_ct, m_tc);
-//    mult_matrix_by_vector(m_tc, pos_, pos);
-//    mult_matrix_by_vector(m_tc, vel_, vel);
-
 
     clock_t start = clock(), diff;
-
+//
     int step = 1;
     int i, j;
-
-    long double a[7][3], b[7][3];
+//
+    long double a[7][3];
     for (i = 0; i < 7; i++)
     {
         for (j = 0; j < 3; j++)
         {
             a[i][j] = 0;
-            b[i][j] = 0;
         }
     }
-//    long double i;
-//    for (i = start_date; i <= end_date; i = i + step/86400.0)
-    i = 0;
-    while (start_date <= end_date)
-//    while(i < 86400)
+    long double add = (long double)step / 86400.0L;
+//    while (start_date <= end_date)
+    while (i <= 86400)
     {
         everhart(start_date, pos, vel, fin_pos, fin_vel, a, step);
 
@@ -272,29 +245,14 @@ int main() {
         vel[0] = fin_vel[0];
         vel[1] = fin_vel[1];
         vel[2] = fin_vel[2];
-        start_date += step / 86400.0L;
+        start_date += add;
         ++i;
     }
-//
-//    get_precession_matrix(tt_to_tdb(mjd_to_tt(end_date)), precession);
-//    get_nutation_matrix(tt_to_tdb(mjd_to_tt(end_date)), nutation);
-//    get_earth_rotation_matrix(mjd_to_gast(end_date, 0.0), earth_rotation);
-//    fixed_to_terra(precession, nutation, earth_rotation, m_ct);
-//    mult_matrix_by_vector(m_ct, pos, pos_);
-//
+
     printf("\nx = %2.9Lf\ny = %2.9Lf\nz = %2.9Lf\n\n", pos[0], pos[1], pos[2]);
 
-
-    int year, month, day, hour, minute;
-    long double seconds;
-    mjd_to_utc(start_date, &year, &month, &day, &hour, &minute, &seconds);
-    printf("year=%i, month=%i, day=%i, hour=%i, minute=%i, seconds=%Lf\n\n",
-           year, month, day, hour, minute, seconds);
-
-
-
     diff = clock() - start;
-
+//
     int msec = diff * 1000 / CLOCKS_PER_SEC;
     printf("Time taken %d seconds %d milliseconds", msec/1000, msec%1000);
 

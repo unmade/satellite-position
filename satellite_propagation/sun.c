@@ -23,21 +23,163 @@ void get_sun_ecliptic_position(long double tdb, long double *l, long double *b, 
     long double dl, dr, db;
     long double u, c, s;
     
-    ts = (tdb - 51544.5) / 36525;
+    ts = (tdb - 51544.5L) / 36525.0L;
 
-    um2 = PI2*frac(0.1387306 + 162.5485917*ts); // { the Venus   M2 }
-    um3 = PI2*frac(0.9931266 + 99.9973604*ts);  // { the Earth   M3 }
-    um4 = PI2*frac(0.0543250 + 53.1666028*ts);  // { the Mars    M4 }
-    um5 = PI2*frac(0.0551750 + 8.4293972*ts);   // { the Jupiter M5 }
-    um6 = PI2*frac(0.8816500 + 3.3938722*ts);   // { the Saturn  M6 }
+    um2 = PI2 * frac(0.1387306 + 162.5485917*ts); // { the Venus   M2 }
+    um3 = PI2 * frac(0.9931266 + 99.9973604*ts);  // { the Earth   M3 }
+    um4 = PI2 * frac(0.0543250 + 53.1666028*ts);  // { the Mars    M4 }
+    um5 = PI2 * frac(0.0551750 + 8.4293972*ts);   // { the Jupiter M5 }
+    um6 = PI2 * frac(0.8816500 + 3.3938722*ts);   // { the Saturn  M6 }
 
     // { mean arguments of lunar orbit in radian }
-    dad = PI2*frac(0.8274+1236.8531*ts); // { elongation of the Moon    D  D }
-    dal = PI2*frac(0.3749+1325.5524*ts); // { mean anomaly of the Moon  l  A }
-    daf = PI2*frac(0.2591+1342.2278*ts); // { mean argument of latitude F  U }
+    dad = PI2 * frac(0.8274 + 1236.8531*ts); // { elongation of the Moon    D  D }
+    dal = PI2 * frac(0.3749 + 1325.5524*ts); // { mean anomaly of the Moon  l  A }
+    daf = PI2 * frac(0.2591 + 1342.2278*ts); // { mean argument of latitude F  U }
+
+    dl = 0.0 ; dr = 0.0; db = 0.0; // { initial nullo corrections }
 
     //{ keplerian terms and perturbations by Venus }
-    dl = 0.0 ; dr = 0.0; db = 0.0; // { initial nullo corrections }
+//    dl = -0.22*cosl(um3) + 6892.76*sinl(um3)
+//         +(-0.06*cosl(um3) - 17.35*sinl(um3))*ts
+//         +(-0.01*cosl(um3) - 0.05*sinl(um3))*ts*ts
+//         +71.98*sinl(2*um3)
+//         -0.36*sinl(2*um3)*ts
+//         +1.04*sinl(3*um3)
+//         +0.03*cosl(-um2) - 0.07*sinl(-um2)
+//         +2.35*cosl(um3 - um2) - 4.23*sinl(um3 - um2)
+//         -0.10*cosl(um3 - 2*um2) + 0.06*sinl(um3 - 2*um2)
+//         -0.06*cosl(2*um3 - um2) - 0.03*sinl(2*um3 - um2)
+//         -4.70*cosl(2*um3 - 2*um2) + 2.90*sinl(2*um3 - 2*um2)
+//         +1.80*cosl(3*um3 - 2*um2) - 1.74*sinl(3*um3 - 2*um2)
+//         -0.67*cosl(3*um3 - 3*um2) + 0.03*sinl(3*um3 - 3*um2)
+//         +0.03*cosl(4*um3 - 2*um2) - 0.03*sinl(4*um3 - 2*um2)
+//         +1.51*cosl(4*um3 - 3*um2) - 0.40*sinl(4*um3 - 3*um2)
+//         -0.19*cosl(4*um3 - 4*um2) - 0.09*sinl(4*um3 - 4*um2)
+//         +0.76*cosl(5*um3 - 3*um2) - 0.68*sinl(5*um3 - 3*um2)
+//         -0.14*cosl(5*um3 - 4*um2) - 0.04*sinl(5*um3 - 4*um2)
+//         -0.05*cosl(5*um3 - 5*um2) - 0.07*sinl(5*um3 - 5*um2)
+//         +0.15*cosl(6*um3 - 4*um2) - 0.04*sinl(6*um3 - 4*um2)
+//         -0.03*cosl(6*um3 - 5*um2) - 0.03*sinl(6*um3 - 5*um2)
+//         -0.04*sinl(6*um3 - 6*um2)
+//         -0.12*cosl(7*um3 - 5*um2) - 0.03*sinl(7*um3 - 5*um2)
+//
+//         // Возмущения в долготе, обусловленное действием Марса
+//         -0.22*cosl(um3 - um4) + 0.17*sinl(um3 - um4)
+//         -1.66*cosl(um3 - 2*um4) + 0.62*sinl(um3 - 2*um4)
+//         +1.96*cosl(2*um3 - 2*um4) + 0.57*sinl(2*um3 - 2*um4)
+//         +0.40*cosl(2*um3 - 3*um4) + 0.15*sinl(2*um3 - 3*um4)
+//         +0.53*cosl(2*um3 - 4*um4) + 0.26*sinl(2*um3 - 4*um4)
+//         +0.05*cosl(3*um3 - 3*um4) + 0.12*sinl(3*um3 - 3*um4)
+//         -0.13*cosl(3*um3 - 4*um4) - 0.48*sinl(3*um3 - 4*um4) // TODO: нет в методичке
+//         -0.04*cosl(3*um3 - 5*um4) - 0.20*sinl(3*um3 - 5*um4)
+//         -0.03*sinl(4*um3 - 4*um4)
+//         +0.05*cosl(4*um3 - 5*um4) - 0.07*sinl(4*um3 - 5*um4)
+//         -0.10*cosl(4*um3 - 6*um4) + 0.11*sinl(4*um3 - 6*um4)
+//         -0.05*cosl(5*um3 - 7*um4)
+//         +0.05*cosl(5*um3 - 8*um4) + 0.01*sinl(5*um3 - 8*um4)
+//
+//         // Возмущения в долготе, обусловленные действием Юпитера и Сатурна
+//         +0.01*cosl(-um3 - um5) + 0.07*sinl(-um3 - um5)
+//         -0.31*cosl(-um5) + 2.58*sinl(-um5)
+//         -7.21*cosl(um3 - um5) - 0.06*sinl(um3 - um5)
+//         -0.54*cosl(um3 - 2*um5) - 1.52*sinl(um3 - 2*um5)
+//         -0.03*cosl(um3 - 3*um5) - 0.21*sinl(um3 - 3*um5)
+//         -0.16*cosl(2*um3 - um5) + 0.05*sinl(2*um3 - um5)
+//         +0.14*cosl(2*um3 - 2*um5) - 2.73*sinl(2*um3 - 2*um5)
+//         +0.07*cosl(2*um3 - 3*um5) - 0.55*sinl(2*um3 - 3*um5)
+//         +0.02*cosl(2*um3 - 4*um5) - 0.08*sinl(2*um3 - 4*um5)
+//         +0.01*cosl(3*um3 - 2*um5) - 0.07*sinl(3*um3 - 2*um5)
+//         -0.16*cosl(3*um3 - 3*um5) - 0.03*sinl(3*um3 - 3*um5)
+//         -0.04*cosl(3*um3 - 4*um5) - 0.01*sinl(3*um3 - 4*um5)
+//         +0.32*sinl(-um6)
+//         -0.08*cosl(um3 - um6) - 0.41*sinl(um3 - um6)
+//         +0.04*cosl(um3 - 2*um6) + 0.10*sinl(um3 - 2*um6)
+//         +0.04*cosl(2*um3 - 2*um6) + 0.10*sinl(2*um3 - 2*um6);
+//
+//    // Возмущения в широте, обусловленные действием Венеры, Марса,
+//    // Юпитера и Сатурна
+//    db = +0.02*cosl(-um2) - 0.02*sinl(-um2)
+//         +0.02*cosl(um3 -2*um2)
+//         +0.01*cosl(2*um3 - um2) - 0.09*sinl(2*um3 - um2)
+//         +0.01*cosl(2*um3 - 2*um2) - 0.01*sinl(2*um3 - 2*um2)
+//         +0.04*cosl(3*um3 - 2*um2) - 0.06*sinl(3*um3 - 2*um2)
+//         +0.01*cosl(3*um3 - 3*um2)
+//         +0.01*cosl(4*um3 - 2*um2) - 0.01*sinl(4*um3 - 2*um2)
+//         +0.18*cosl(4*um3 - 3*um2) - 0.10*sinl(4*um3 - 3*um2)
+//         +0.01*cosl(5*um3 - 3*um2)
+//         -0.03*cosl(5*um3 - 4*um2)
+//         +0.01*cosl(6*um3 - 4*um2)
+//         -0.01*cosl(6*um3 - 5*um2)
+//         -0.02*cosl(7*um3 - 5*um2) - 0.01*sinl(7*um3 - 5*um2)
+//         +0.01*sinl(2*um3 - 2*um4)
+//         +0.01*cosl(3*um3 - 4*um4)
+//         -0.02*sinl(-um3 - um5)
+//         +0.02*cosl(-um5)
+//         -0.02*sinl(um3 - um5)
+//         +0.01*cosl(um3 - 2*um5) - 0.17*sinl(um3 - 2*um5)
+//         -0.02*sinl(um3 - 3*um5)
+//         +0.01*cosl(2*um3 - um5)
+//         +0.01*cosl(2*um3 - 3*um5)
+//         -0.01*sinl(um3 - um6);
+//
+//    // Возмущения в расстоянии, обусловленные действием Венеры
+//    dr = -16707.37*cosl(um3) - 0.54*sinl(um3)
+//         +(42.04*cosl(um3) - 0.15*sinl(um3))*ts
+//         +(0.13*cosl(um3) - 0.02*sinl(um3))*ts*ts
+//         -139.57*cosl(2*um3)
+//         +0.70*cosl(2*um3)*ts
+//         -1.75*cosl(3*um3)
+//         -0.16*cosl(-um2) - 0.07*sinl(-um2)
+//         -4.75*cosl(um3 - um2) - 2.64*sinl(um3 - um2)
+//         +0.12*cosl(um3 - 2*um2) + 0.20*sinl(um3 - 2*um2)
+//         +0.20*cosl(2*um3 - um2) - 0.01*sinl(2*um3 - um2)
+//         +8.28*cosl(2*um3 - 2*um2) + 13.42*sinl(2*um3 - 2*um2)
+//         -1.44*cosl(3*um3 - 2*um2) - 1.57*sinl(3*um3 - 2*um2)
+//         +0.11*cosl(3*um3 - 3*um2) + 2.43*sinl(3*um3 - 3*um2)
+//         +0.10*cosl(4*um3 - 2*um2) + 0.09*sinl(4*um3 - 2*um2)
+//         -0.88*cosl(4*um3 - 3*um2) - 3.36*sinl(4*um3 - 3*um2)
+//         -0.38*cosl(4*um3 - 4*um2) + 0.77*sinl(4*um3 - 4*um2)
+//         +0.30*cosl(5*um3 - 3*um2) + 0.37*sinl(5*um3 - 3*um2)
+//         -0.11*cosl(5*um3 - 4*um2) + 0.43*sinl(5*um3 - 4*um2)
+//         -0.31*cosl(5*um3 - 5*um2) + 0.21*sinl(5*um3 - 5*um2)
+//         -0.06*cosl(6*um3 - 4*um2) - 0.21*sinl(6*um3 - 4*um2)
+//         -0.09*cosl(6*um3 - 5*um2) + 0.09*sinl(6*um3 - 5*um2)
+//         -0.18*cosl(6*um3 - 6*um2) + 0.02*sinl(6*um3 - 6*um2)
+//         -0.08*cosl(7*um3 - 5*um2) + 0.31*sinl(7*um3 - 5*um2)
+//
+//         // Возмущения в расстоянии, обусловленные действием Марса
+//         -0.21*cosl(um3 - um4) - 0.27*sinl(um3 - um4)
+//         +0.16*cosl(um3 - 2*um4) + 0.28*sinl(um3 - 2*um4)
+//         -1.32*cosl(2*um3 - 2*um4) + 4.55*sinl(2*um3 - 2*um4)
+//         -0.17*cosl(2*um3 - 3*um4) + 0.46*sinl(2*um3 - 3*um4)
+//         +0.09*cosl(2*um3 - 4*um4) - 0.22*sinl(2*um3 - 4*um4)
+//         -0.35*cosl(3*um3 - 3*um4) + 0.15*sinl(3*um3 - 3*um4)
+//         +1.06*cosl(3*um3 - 4*um4) - 0.29*sinl(3*um3 - 4*um4)
+//         +0.20*cosl(3*um3 - 5*um4) - 0.04*sinl(3*um3 - 5*um4)
+//         +0.10*cosl(4*um3 - 4*um4) + 0.04*sinl(4*um3 - 4*um4)
+//         +0.20*cosl(4*um3 - 5*um4) + 0.14*sinl(4*um3 - 5*um4)
+//         -0.23*cosl(4*um3 - 6*um4) - 0.22*sinl(4*um3 - 6*um4)
+//         +0.01*cosl(5*um3 - 7*um4) - 0.14*sinl(5*um3 - 7*um4)
+//         -0.02*cosl(5*um3 - 8*um4) + 0.10*sinl(5*um3 - 8*um4)
+//
+//         // Возмущения в расстоянии, обусловленные действием Юпитера и Сатурна
+//         +0.18*cosl(-um3 - um5) - 0.02*sinl(-um3 - um5)
+//         +0.52*cosl(-um5) + 0.34*sinl(-um5)
+//         +0.13*cosl(um3 - um5) - 16.27*sinl(um3 - um5)
+//         +3.09*cosl(um3 - 2*um5) - 1.12*sinl(um3 - 2*um5)
+//         +0.38*cosl(um3 - 3*um5) - 0.06*sinl(um3 - 3*um5)
+//         -0.18*cosl(2*um3 - um5) - 0.31*sinl(2*um3 - um5)
+//         +9.23*cosl(2*um3 - 2*um5) + 0.48*sinl(2*um3 - 2*um5)
+//         +1.83*cosl(2*um3 - 3*um5) + 0.25*sinl(2*um3 - 3*um5)
+//         +0.25*cosl(2*um3 - 4*um5) + 0.06*sinl(2*um3 - 4*um5)
+//         +0.16*cosl(3*um3 - 2*um5) + 0.04*sinl(3*um3 - 2*um5)
+//         +0.08*cosl(3*um3 - 3*um5) - 0.64*sinl(3*um3 - 3*um5)
+//         +0.03*cosl(3*um3 - 4*um5) - 0.17*sinl(3*um3 - 4*um5)
+//         +0.01*cosl(-um6)
+//         +0.97*cosl(um3 - um6) - 0.18*sinl(um3 - um6)
+//         -0.23*cosl(um3 - 2*um6) + 0.10*sinl(um3 - 2*um6)
+//         -0.35*cosl(2*um3 - 2*um6) + 0.13*sinl(2*um3 - 2*um6);
+
     u = um3;   //{ 1 0 0 }
     c = cosl(u); s = sinl(u);
     dl = dl-0.22*c+6892.76*s;
@@ -137,7 +279,7 @@ void get_sun_ecliptic_position(long double tdb, long double *l, long double *b, 
     dl = dl-0.12*c-0.03*s;
     dr = dr-0.08*c+0.31*s;
     db = db-0.02*c-0.01*s;
-    
+//
     //{ perturbations by Mars }
     u = um3-um4; //{ 1,-1,0 }
     c = cosl(u); s = sinl(u);
@@ -166,7 +308,8 @@ void get_sun_ecliptic_position(long double tdb, long double *l, long double *b, 
     dr = dr-0.35*c+0.15*s;
     u = 3*um3-4*um4;// { 3,-4,0 }
     c = cosl(u); s = sinl(u);
-    dl = dl-0.13*c-0.48*s;
+
+    dl = dl-0.13*c-0.48*s;   // TODO: нет в методичке
     dr = dr+1.06*c-0.29*s;
     db = db+0.01*c;
     u = 3*um3-5*um4; //{ 3,-5,0 }
@@ -193,7 +336,8 @@ void get_sun_ecliptic_position(long double tdb, long double *l, long double *b, 
     c = cosl(u); s = sinl(u);
     dl = dl+0.05*c+0.01*s;
     dr = dr-0.02*c+0.10*s;
-    //{ perturbations by Jupiter }
+
+//    { perturbations by Jupiter }
     u = -um3-um5;// {-1,-1,0 }
     c = cosl(u); s = sinl(u);
     dl = dl+0.01*c+0.07*s;
@@ -249,7 +393,7 @@ void get_sun_ecliptic_position(long double tdb, long double *l, long double *b, 
     c = cosl(u); s = sinl(u);
     dl = dl-0.04*c-0.01*s;
     dr = dr+0.03*c-0.17*s;
-    //{ perturbations by Saturn }
+//    { perturbations by Saturn }
     u = -um6; //{ 0,-1,0 }
     c = cosl(u); s = sinl(u);
     dl = dl+0.32*s;

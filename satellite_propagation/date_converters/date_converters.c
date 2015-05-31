@@ -69,18 +69,19 @@ long double utc_to_tt(int nyear, int nmonth, int nday,
 long double mjd_to_tt(long double mjd_in_utc)
 {
     int year, month, day, hour, minute;
-    long double seconds;
-    mjd_to_utc(mjd_in_utc, &year, &month, &day, &hour, &minute, &seconds);
-    long double deltaT = get_deltaT(year, month);
+    long double seconds, deltaT;
 
-    return mjd_in_utc + (deltaT / 86400);
+    mjd_to_utc(mjd_in_utc, &year, &month, &day, &hour, &minute, &seconds);
+    deltaT = get_deltaT(year, month);
+
+    return mjd_in_utc + (deltaT / 86400.0);
 }
 
 
 long double tt_to_tdb(long double tt)
 {
-    long double d = (tt - 51544.5) / 36525;
-    long double g = (M_PI / 180) * (357.258 + 35999.050 * d);
+    long double d = (tt - 51544.5) / 36525.0;
+    long double g = GRAD_IN_RAD * (357.258 + 35999.050 * d);
     return tt + ((0.00168*sinl(g+0.0167*sinl(g)))/86400);
 
 //    long double mjd = utc_to_mjd(2003, 3, 7, 2, 45, 0.0);
