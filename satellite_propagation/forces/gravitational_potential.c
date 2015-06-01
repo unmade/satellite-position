@@ -152,9 +152,9 @@ void get_acceleration_by_earth(long double utc_in_mjd,
         dR = (n + 2) * FM * powl(R0_r, n+1);
     }
 
-    u[0] = -FM * (x/r3);
-    u[1] = -FM * (y/r3);
-    u[2] = -FM * (z/r3);
+    u[0] += -FM * (x/r3);
+    u[1] += -FM * (y/r3);
+    u[2] += -FM * (z/r3);
 
     get_terra_to_fixed_matrix(m_ct, m_tc);
     mult_matrix_by_vector(m_tc, u, acceleration);

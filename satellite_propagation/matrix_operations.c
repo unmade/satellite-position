@@ -46,11 +46,12 @@ void transpose(void *dest, void *src, int src_h, int src_w)
 
 void print_matrix(int n, int m, long double *matrix)
 {
-    for (int i=0; i<n; i++)
+    int i, j;
+    for (i=0; i<n; i++)
     {
-        for (int j=0;j<m;j++)
+        for (j=0;j<m;j++)
         {
-            printf("%2.15Lf   ", *((matrix+i*n) + j));
+            printf("%2.15f   ", (double)(*((matrix+i*n) + j)));
         }
         printf("\n");
     }

@@ -57,42 +57,21 @@ void calc_F(long double t, long double pos[3], long double acceleration[3])
     acceleration[1] += acc[1];
     acceleration[2] += acc[2];
 
-//    get_acceleration_by_moon(t, pos[0], pos[1], pos[2], acc);
-//    acceleration[0] += acc[0];
-//    acceleration[1] += acc[1];
-//    acceleration[2] += acc[2];
-//
-//    get_acceleration_by_sun(t, pos[0], pos[1], pos[2], acc);
-//    acceleration[0] += acc[0];
-//    acceleration[1] += acc[1];
-//    acceleration[2] += acc[2];
+    get_acceleration_by_moon(t, pos[0], pos[1], pos[2], acc);
+    acceleration[0] += acc[0];
+    acceleration[1] += acc[1];
+    acceleration[2] += acc[2];
+
+    get_acceleration_by_sun(t, pos[0], pos[1], pos[2], acc);
+    acceleration[0] += acc[0];
+    acceleration[1] += acc[1];
+    acceleration[2] += acc[2];
 
     return;
 }
 
 
 void get_c(long double t[8], long double c[8][8])
-//{
-//    int i, j;
-//
-//    for (i = 0; i < N; i++)
-//        for (j = 0; j < N; j++)
-//            c[i][j] = 0;
-//
-//    for (i = 0; i < N; i++)
-//        c[i][i] = 1;
-//
-//    for (i = 1; i < N; i++)
-//        c[i][0] = -t[i] * c[i-1][0];
-//
-//    for (i = 1; i < N; i++)
-//    {
-//        for (j = 1; j < i; j++)
-//        {
-//            c[i][j] = c[i-1][j-1] - t[i]*c[i-1][j];
-//        }
-//    }
-//}
 {
     int i, j;
 
@@ -119,28 +98,6 @@ void get_c(long double t[8], long double c[8][8])
 
 
 void get_A(long double A[7][3], long double a[7][3], long double c[8][8], int curr_substep)
-//{
-//    int i, j, k;
-//
-//    for (i = 0; i < curr_substep; i++)
-//    {
-//        for (j = 0; j < 3; j++)
-//        {
-//            A[i][j] = a[i][j];
-//        }
-//    }
-//
-//    for (j = 0; j < curr_substep; j++)
-//    {
-//        for (i = 1; i < 7; i++)
-//        {
-//            for (k = 0; k < 3; k++)
-//            {
-//                A[j][k] += c[i][j] * a[i][k];
-//            }
-//        }
-//    }
-//}
 {
     int i, j, k;
 
@@ -149,7 +106,7 @@ void get_A(long double A[7][3], long double a[7][3], long double c[8][8], int cu
         for (j = 0; j < 3; j++)
         {
             A[i][j] = a[i][j];
-            for (k = 1; k < 7; k++)
+            for (k = i+1; k < 7; k++)
             {
                 A[i][j] += c[k][i] * a[k][j];
             }
@@ -178,30 +135,30 @@ void calc_new_pos(long double t,
 }
 
 
-void get_alpha(long double F[3], long double F1[3], long double t[8], long double a[7][3], int n)
+void get_alpha(long double F[3], long double F1[3], long double t[8], long double a[7][3], int curr_substep)
 {
     int i, j;
 
     for (i = 0; i < 3; i++)
     {
-        a[n][i] = (F[i] - F1[i]) / t[n+1];
+        a[curr_substep-1][i] = (F[i] - F1[i]) / t[curr_substep];
     }
 
-    for (i = 1; i < n+1; i++)
+    for (j = 0; j < 3; j++)
     {
-        for (j = 0; j < 3; j++)
+        for (i = 1; i < curr_substep; i++)
         {
-            a[n][j] -= a[i-1][j];
-            a[n][j] /= (t[n+1] - t[i]);
+            a[curr_substep - 1][j] -= a[i-1][j];
+            a[curr_substep - 1][j] /= (t[curr_substep] - t[i]);
         }
     }
 }
 
 
-void everhart(long double utc_in_mjd,
-              long double start_pos[3], long double start_vel[3],
-              long double final_pos[3], long double fin_vel[3],
-              long double a[7][3], int step)
+void do_everhart(long double utc_in_mjd,
+                 long double start_pos[3], long double start_vel[3],
+                 long double final_pos[3], long double fin_vel[3],
+                 long double a[7][3], long double step)
 {
     long double t[8], c[8][8];
     long double A[7][3];
@@ -227,11 +184,11 @@ void everhart(long double utc_in_mjd,
 
     calc_F(utc_in_mjd + t[0]/86400.0, start_pos, F1);
 
-    for (i = 1; i < 9; i++)
+    for (i = 1; i < N; i++)
     {
         calc_new_pos(t[i], start_pos, start_vel, F1, A, new_pos, new_vel);
         calc_F(utc_in_mjd + t[i]/86400.0, new_pos, F);
-        get_alpha(F, F1, t, a, i-1);
+        get_alpha(F, F1, t, a, i);
         get_A(A, a, c, i);
     }
 

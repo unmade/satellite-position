@@ -196,7 +196,7 @@ int main() {
 
 
     long double start_date = utc_to_mjd(2015, 5, 14, 6, 0, 0);
-//    long double end_date = utc_to_mjd(2015, 5, 15, 6, 0, 0);
+    long double end_date = utc_to_mjd(2015, 5, 15, 6, 0, 0.0);
     long double pos[3], fin_pos[3], vel[3], fin_vel[3];
 
 //    pos[0] = 33508.4071859207L;
@@ -205,24 +205,36 @@ int main() {
 //    vel[0] = -1.86508722606082L;
 //    vel[1] = 2.44434537660644L;
 //    vel[2] = 0.0378635308063818L;
-    start_date = 51865.0L;
-    pos[0] = -43203.607000L;
-    pos[1] = 932.853000L;
-    pos[2] = 105.030000L;
-    vel[0] = -0.108342L;
-    vel[1] = -2.994434L;
-    vel[2] = 0.062441L;
+//    start_date = 51865.0L;
+//    pos[0] = -43203.607000L;
+//    pos[1] = 932.853000L;
+//    pos[2] = 105.030000L;
+//    vel[0] = -0.108342L;
+//    vel[1] = -2.994434L;
+//    vel[2] = 0.062441L;
 //    pos_[0] = 33508.4071859207L;
 //    pos_[1] = 25585.7790086467L;
 //    pos_[2] = -493.907358861003L;
 //    vel_[0] = -1.86508722606082L;
 //    vel_[1] = 2.44434537660644L;
 //    vel_[2] = 0.0378635308063818L;
+    pos[0] = 33066.769531250;
+    pos[1] = 26154.355468750;
+    pos[2] = -484.732604980;
 
+    vel[0] = -1.906557322;
+    vel[1] = 2.412147284;
+    vel[2] = 0.038580179;
+
+    printf("%Lf", (end_date - start_date) * 86400.0);
 
     clock_t start = clock(), diff;
-//
-    int step = 1;
+
+    long double step = 60.0L;
+    long double count = truncl((end_date - start_date) * 86400 / step);
+    long double fin_step = (end_date - start_date) * 86400 - count * step;
+
+
     int i, j;
 //
     long double a[7][3];
@@ -233,11 +245,28 @@ int main() {
             a[i][j] = 0;
         }
     }
-    long double add = (long double)step / 86400.0L;
-//    while (start_date <= end_date)
-    while (i <= 86400)
+    long double add = step / 86400.0L;
+    i = 0;
+//    while (start_date < end_date)
+    while (i < count)
     {
-        everhart(start_date, pos, vel, fin_pos, fin_vel, a, step);
+        do_everhart(end_date, pos, vel, fin_pos, fin_vel, a, -step);
+
+        pos[0] = (float)fin_pos[0];
+        pos[1] = (float)fin_pos[1];
+        pos[2] = (float)fin_pos[2];
+        vel[0] = (float)fin_vel[0];
+        vel[1] = (float)fin_vel[1];
+        vel[2] = (float)fin_vel[2];
+        end_date -= add;
+        ++i;
+    }
+
+    if (fin_step)
+    {
+        start_date += fin_step / 86400.0L;
+
+        do_everhart(end_date, pos, vel, fin_pos, fin_vel, a, -fin_step);
 
         pos[0] = fin_pos[0];
         pos[1] = fin_pos[1];
@@ -245,16 +274,22 @@ int main() {
         vel[0] = fin_vel[0];
         vel[1] = fin_vel[1];
         vel[2] = fin_vel[2];
-        start_date += add;
-        ++i;
+        end_date -= add;
     }
 
     printf("\nx = %2.9Lf\ny = %2.9Lf\nz = %2.9Lf\n\n", pos[0], pos[1], pos[2]);
+    printf("\nx = %2.9Lf\ny = %2.9Lf\nz = %2.9Lf\n\n", vel[0], vel[1], vel[2]);
 
     diff = clock() - start;
 //
     int msec = diff * 1000 / CLOCKS_PER_SEC;
     printf("Time taken %d seconds %d milliseconds", msec/1000, msec%1000);
 
+        int year, month, day, hour, minute;
+    long double seconds;
+    mjd_to_utc(start_date, &year, &month, &day, &hour, &minute, &seconds);
+
+    printf("\n\nyear=%i, month=%i, day=%i, hour=%i, minute=%i, seconds=%Lf\n\n",
+           year, month, day, hour, minute, seconds);
     return 0;
 }
