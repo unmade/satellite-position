@@ -19,4 +19,11 @@ add_executable(satellite_propagation ${SOURCE_FILES}
     satellite_propagation/forces/moon_forces.h satellite_propagation/forces/moon_forces.c
     satellite_propagation/forces/sun_forces.h satellite_propagation/forces/sun_forces.c
     satellite_propagation/everhart.h satellite_propagation/everhart.c
-    satellite_propagation/propagate.h satellite_propagation/propagate.c)
+    satellite_propagation/propagate.h satellite_propagation/propagate.c
+    satellite_propagation/tests/rotation_matrix_test.h satellite_propagation/tests/rotation_matrix_test.c
+    satellite_propagation/tests/matrix_operations_test.h satellite_propagation/tests/matrix_operations_test.c
+    satellite_propagation/tests/date_converters_test.h satellite_propagation/tests/date_converters_test.c
+    satellite_propagation/tests/precession_test.h satellite_propagation/tests/precession_test.c
+    satellite_propagation/tests/nutation_test.h satellite_propagation/tests/nutation_test.c
+    satellite_propagation/tests/coordinates_converters_test.h satellite_propagation/tests/coordinates_converters_test.c
+    satellite_propagation/tests/moon_test.h satellite_propagation/tests/moon_test.c satellite_propagation/tests/sun_test.h satellite_propagation/tests/sun_test.c satellite_propagation/tests/forces_test.h satellite_propagation/tests/forces_test.c satellite_propagation/tests/propagation_test.h satellite_propagation/tests/propagation_test.c)

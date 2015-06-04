@@ -6,19 +6,40 @@
 #define SATELLITE_PROPAGATION_CONSTANTS_H
 #include <math.h>
 
-static long double const PI2 = 2 * (long double)M_PI; ///< π умноженное на два
-static long double const SEC_IN_RAD = (2 * (long double)M_PI) / 1296000.0L; ///< Кол-во секунд в радиане
+#define SEC_IN_DAY 86400.0000000000000000000
+#define JD2000 2451545.000000000000000000
+#define JULIAN_C 36525.0000000000000000000
+#define DIFF_EPOCH 2400000.5000000000000000000
+#define MJD2000 (JD2000 - DIFF_EPOCH)
+
+
+#define PI2 (2*M_PI)
+
+#define GRAD_IN_RAD (M_PI / 180.0000000000000000000) ///< Кол-во радиан в градусе
+#define SEC_IN_RAD (M_PI / 648000.0000000000000000000)
+
+#define AU 149597870.69100000000000000000 ///< 1 а.е.
+
+#define FM 398600.44150000000000000000000000000 ///< Геоцентрическая гравитационная постоянная [км^3 / с^2]
+#define R0 6378.1363000000000000000000000000000 ///< Экваториальный радиус Земли [км]
+
+#define FM_M 4902.79900000000000000000000000000 ///< Гравитационная постоянная на массу Луны [км^3 / с^2]
+#define FM_S 132712438000.000000000000000000000 ///< Гравитационная постоянная на массу Солнца [км^3 / с^2]
+#define P0 0.0000045606000000000000000000000000 ///< Давление солнечного света на среднем расстоянии Земли от Солнца [н / м^2]
+
+//static long double const PI2 = 2 * (long double)M_PI; ///< π умноженное на два
+//static long double const SEC_IN_RAD = (2 * (long double)M_PI) / 1296000.0L; ///< Кол-во секунд в радиане
 static long double const RAD_IN_SEC = (long double)1296000.0L / (2 * (long double)M_PI); ///< Кол-во радиан в секунде
-static long double const GRAD_IN_RAD = (long double)M_PI / 180.0L; ///< Кол-во радиан в градусе
+//static long double const GRAD_IN_RAD = (long double)M_PI / 180.0L; ///< Кол-во радиан в градусе
 static long double const SEC_IN_GRAD = 3600; ///< Кол-во угловых секунд в градусе
 
-static long double const FM = 3.986004415e5L; ///< Геоцентрическая гравитационная постоянная [км^3 / с^2]
-static long double const R0 = 6.378136300e3L; ///< Экваториальный радиус Земли [км]
-static long double const AU = 149597870.691L; ///< 1 а.е.
+//static long double const FM = 3.986004415e5L; ///< Геоцентрическая гравитационная постоянная [км^3 / с^2]
+//static long double const R0 = 6.378136300e3L; ///< Экваториальный радиус Земли [км]
+//static long double const AU = 149597870.691L; ///< 1 а.е.
 
-static long double const FM_M = 4.902799e03L; ///< Гравитационная постоянная на массу Луны [км^3 / с^2]
-static long double const FM_S = 1.32712438e11L; ///< Гравитационная постоянная на массу Солнца [км^3 / с^2]
-static long double const P0 = 4.5606e-06L; ///< Давление солнечного света на среднем расстоянии Земли от Солнца [н / м^2]
+//static long double const FM_M = 4.902799e03L; ///< Гравитационная постоянная на массу Луны [км^3 / с^2]
+//static long double const FM_S = 1.32712438e11L; ///< Гравитационная постоянная на массу Солнца [км^3 / с^2]
+//static long double const P0 = 4.5606e-06L; ///< Давление солнечного света на среднем расстоянии Земли от Солнца [н / м^2]
 
 static long double const N_MAX = 12; ///< Порядок, до которого учитываются гармоники
 

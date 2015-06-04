@@ -6,7 +6,6 @@
 
 #ifndef SATELLITE_PROPAGATION_ROTATION_MATRIX_H
 #define SATELLITE_PROPAGATION_ROTATION_MATRIX_H
-#endif //SATELLITE_PROPAGATION_ROTATION_MATRIX_H
 
 
 /**
@@ -16,7 +15,17 @@
  * @param[out] matr Матрица поворота
  *
  */
-void rotate_by_x(long double a, long double matr[3][3]);
+void rotxl(long double a, long double matr[3][3]);
+
+
+/**
+ * Заполняет matr матрицей поворота по оси ОX
+ *
+ * @param[in] a Угол поворота в радианах
+ * @param[out] matr Матрица поворота
+ *
+ */
+void rotx(double a, double matr[3][3]);
 
 
 /**
@@ -26,7 +35,17 @@ void rotate_by_x(long double a, long double matr[3][3]);
  * @param[out] matr Матрица поворота
  *
  */
-void rotate_by_y(long double a, long double matr[3][3]);
+void rotyl(long double a, long double matr[3][3]);
+
+
+/**
+ * Заполняет matr матрицей поворота по оси ОY
+ *
+ * @param[in] a Угол поворота в радианах
+ * @param[out] matr Матрица поворота
+ *
+ */
+void roty(double a, double matr[3][3]);
 
 
 /**
@@ -36,7 +55,17 @@ void rotate_by_y(long double a, long double matr[3][3]);
  * @param[out] matr Матрица поворота
  *
  */
-void rotate_by_z(long double a, long double matr[3][3]);
+void rotzl(long double a, long double matr[3][3]);
+
+
+/**
+ * Заполняет matr матрицей поворота по оси ОZ
+ *
+ * @param[in] a Угол поворота в радианах
+ * @param[out] matr Матрица поворота
+ *
+ */
+void rotz(double a, double matr[3][3]);
 
 
 /**
@@ -46,9 +75,17 @@ void rotate_by_z(long double a, long double matr[3][3]);
  * @param[out] matr Матрица поворота
  *
  */
-void get_earth_rotation_matrix(long double gast, long double matr[3][3]);
+void get_earth_rotationl(long double gast, long double matr[3][3]);
 
 
-//long double** rotate_by_y(long double a);
+/**
+ * Определяет матрицу вращение Земли
+ *
+ * @param[in] gast Гринвическое истинное звездное время
+ * @param[out] matr Матрица поворота
+ *
+ */
+void get_earth_rotation(double gast, double matr[3][3]);
 
-//void destroyArray(long double** arr);
+
+#endif //SATELLITE_PROPAGATION_ROTATION_MATRIX_H

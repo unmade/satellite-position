@@ -4,9 +4,21 @@
 #include "constants.h"
 
 
-void get_precession_parameters(long double tdb, long double *zeta, long double *theta, long double *z)
+void get_precession_parametersl(long double tdb, long double *zeta, long double *theta, long double *z)
 {
-    long double ts = (tdb - 51544.5) / 36525;
+    long double ts = (tdb - MJD2000) / JULIAN_C;
+
+    *zeta = SEC_IN_RAD * (2306.2181L + (0.30188L + 0.017998L * ts) * ts) * ts;
+    *theta = SEC_IN_RAD * (2004.3109L - (0.42665L + 0.041833L * ts) * ts) * ts;
+    *z = SEC_IN_RAD * (2306.2181L + (1.09468L + 0.018203L * ts) * ts) * ts;
+
+    return;
+}
+
+
+void get_precession_parameters(double tdb, double *zeta, double *theta, double *z)
+{
+    double ts = (tdb - MJD2000) / JULIAN_C;
 
     *zeta = SEC_IN_RAD * (2306.2181 + (0.30188 + 0.017998 * ts) * ts) * ts;
     *theta = SEC_IN_RAD * (2004.3109 - (0.42665 + 0.041833 * ts) * ts) * ts;
@@ -16,20 +28,39 @@ void get_precession_parameters(long double tdb, long double *zeta, long double *
 }
 
 
-void get_precession_matrix(long double tdb, long double precession_matr[3][3])
+void get_precession_matrixl(long double tdb, long double precession_matr[3][3])
 {
     long double zeta, theta, z;
     long double Rz_z[3][3], Ry_theta[3][3], Rz_zeta[3][3], R[3][3];
 
+    get_precession_parametersl(tdb, &zeta, &theta, &z);
+
+    rotzl(-z, Rz_z);
+    rotyl(theta, Ry_theta);
+    rotzl(-zeta, Rz_zeta);
+
+    mult_matricesl(Ry_theta, Rz_zeta, R);
+
+    mult_matricesl(Rz_z, R, precession_matr);
+
+    return;
+}
+
+
+void get_precession_matrix(double tdb, double precession_matr[3][3])
+{
+    double zeta, theta, z;
+    double Rz_z[3][3], Ry_theta[3][3], Rz_zeta[3][3], R[3][3];
+
     get_precession_parameters(tdb, &zeta, &theta, &z);
 
-    rotate_by_z(-z, Rz_z);
-    rotate_by_y(theta, Ry_theta);
-    rotate_by_z(-zeta, Rz_zeta);
+    rotz(-z, Rz_z);
+    roty(theta, Ry_theta);
+    rotz(-zeta, Rz_zeta);
 
-    mult_matrix(Ry_theta, Rz_zeta, R);
+    mult_matrices(Ry_theta, Rz_zeta, R);
 
-    mult_matrix(Rz_z, R, precession_matr);
+    mult_matrices(Rz_z, R, precession_matr);
 
     return;
 }
