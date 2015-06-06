@@ -5,9 +5,9 @@
 #include <assert.h>
 #include <math.h>
 #include "coordinates_converters_test.h"
-#include "../coordinates_converters.h"
-#include "../precession.h"
-#include "../nutation.h"
+#include "coordinates_converters.h"
+#include "precession.h"
+#include "nutation.h"
 
 void get_mean_equ_to_fixed_matrixl_test(void)
 {

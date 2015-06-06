@@ -5,8 +5,8 @@
 #include <math.h>
 #include <assert.h>
 #include "propagation_test.h"
-#include "../date_converters.h"
-#include "../propagate.h"
+#include "date_converters.h"
+#include "propagate.h"
 
 void propagatel_test(void)
 {

@@ -3,8 +3,9 @@
 //
 
 #include <math.h>
-#include "propagate.h"
-#include "integration/integration.h"
+#include "../include/integration.h"
+#include "../include/propagate.h"
+
 #include "constants.h"
 
 void propagatel(long double step, long double start_date, long double end_date,
@@ -78,7 +79,7 @@ void propagate(double step, double start_date, double end_date,
     i = 0;
     while (i < count)
     {
-        everhart(start_date, step, start_pos, start_vel, final_pos, final_vel, a);
+//        everhart(start_date, step, start_pos, start_vel, final_pos, final_vel, a);
 
 
         start_pos[0] = final_pos[0];
@@ -93,8 +94,8 @@ void propagate(double step, double start_date, double end_date,
 
     if (fin_step)
     {
-        start_date += fin_step / SEC_IN_DAY;
-        everhart(start_date, fin_step, start_pos, start_vel, final_pos, final_vel, a);
+//        start_date += fin_step / SEC_IN_DAY;
+//        everhart(start_date, fin_step, start_pos, start_vel, final_pos, final_vel, a);
     }
 
     return;

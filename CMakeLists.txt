@@ -1,36 +1,16 @@
 cmake_minimum_required(VERSION 3.2)
-project(satellite_propagation)
+project(satellite_propagation_project)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror")
 
-set(SOURCE_FILES satellite_propagation/main.c)
-add_executable(satellite_propagation ${SOURCE_FILES}
-    satellite_propagation/rotation_matrix.h satellite_propagation/rotation_matrix.c
-    satellite_propagation/constants.h
-    satellite_propagation/date_converters.h satellite_propagation/date_converters.c
-    satellite_propagation/precession.h satellite_propagation/precession.c
-    satellite_propagation/matrix_operations.h satellite_propagation/matrix_operations.c
-    satellite_propagation/nutation.h satellite_propagation/nutation.c
-    satellite_propagation/coordinates_converters.h satellite_propagation/coordinates_converters.c
-    satellite_propagation/forces/gravitational_potential.c
-    satellite_propagation/moon.h satellite_propagation/moon.c
-    satellite_propagation/sun.h satellite_propagation/sun.c
-    satellite_propagation/forces/moon_forces.c
-    satellite_propagation/forces/sun_forces.c
-    satellite_propagation/propagate.h satellite_propagation/propagate.c
-    satellite_propagation/forces/forces.h satellite_propagation/forces/other_forces.c
-    satellite_propagation/integration/everhart.c satellite_propagation/integration/runge_kutta.c
-    satellite_propagation/integration/integration.h
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 
-    satellite_propagation/tests/rotation_matrix_test.h satellite_propagation/tests/rotation_matrix_test.c
-    satellite_propagation/tests/matrix_operations_test.h satellite_propagation/tests/matrix_operations_test.c
-    satellite_propagation/tests/date_converters_test.h satellite_propagation/tests/date_converters_test.c
-    satellite_propagation/tests/precession_test.h satellite_propagation/tests/precession_test.c
-    satellite_propagation/tests/nutation_test.h satellite_propagation/tests/nutation_test.c
-    satellite_propagation/tests/coordinates_converters_test.h satellite_propagation/tests/coordinates_converters_test.c
-    satellite_propagation/tests/moon_test.h satellite_propagation/tests/moon_test.c
-    satellite_propagation/tests/sun_test.h satellite_propagation/tests/sun_test.c
-    satellite_propagation/tests/forces_test.h satellite_propagation/tests/forces_test.c
-    satellite_propagation/tests/propagation_test.h satellite_propagation/tests/propagation_test.c
-    )
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+file(GLOB_RECURSE SOURCE_FILES "src/*.c")
+file(GLOB TEST_FILES "tests/*.c" "tests/*.h")
+
+add_library(satellite_propagation SHARED ${SOURCE_FILES})
+
+add_executable(tests ${TEST_FILES} tests/main.c)
+target_link_libraries(tests LINK_PUBLIC satellite_propagation)

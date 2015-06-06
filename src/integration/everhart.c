@@ -3,9 +3,8 @@
 //
 
 #include <math.h>
-#include "integration.h"
-#include "../constants.h"
-#include "../forces/forces.h"
+#include "constants.h"
+#include "forces.h"
 
 
 const int N = 8;

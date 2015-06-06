@@ -4,9 +4,9 @@
 
 #include <math.h>
 #include "forces.h"
-#include "../date_converters.h"
-#include "../moon.h"
-#include "../constants.h"
+#include "date_converters.h"
+#include "moon.h"
+#include "constants.h"
 
 void get_acceleration_by_moonl(long double utc_in_mjd, long double celes_coord[3],
                                long double acceleration[3])

@@ -1,6 +1,6 @@
-//
-// Created by Леша on 06.06.15.
-//
+/** \file integration.h
+ * Файл определяет функции реализующие методы численного интегрирования
+ */
 
 #ifndef SATELLITE_PROPAGATION_INTEGRATION_H
 #define SATELLITE_PROPAGATION_INTEGRATION_H

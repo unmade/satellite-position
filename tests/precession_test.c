@@ -4,8 +4,8 @@
 
 #include <assert.h>
 #include "precession_test.h"
-#include "../constants.h"
-#include "../precession.h"
+#include "constants.h"
+#include "precession.h"
 
 
 void get_precession_parametersl_test(void)

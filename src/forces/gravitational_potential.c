@@ -2,10 +2,10 @@
 // Created by Леша on 25.05.15.
 //
 
+#include "constants.h"
+#include "coordinates_converters.h"
+#include "matrix_operations.h"
 #include "forces.h"
-#include "../constants.h"
-#include "../coordinates_converters.h"
-#include "../matrix_operations.h"
 
 
 static void get_z_and_dzl(long double z, long double r, long double Z[13][13], long double dZ[13][13])

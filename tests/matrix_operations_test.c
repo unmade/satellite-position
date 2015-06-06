@@ -6,7 +6,7 @@
 #include "assert.h"
 
 #include "matrix_operations_test.h"
-#include "../matrix_operations.h"
+#include "matrix_operations.h"
 
 void mult_matricesl_test(void)
 {

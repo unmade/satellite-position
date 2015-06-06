@@ -5,8 +5,8 @@
 #include <math.h>
 #include <assert.h>
 #include "moon_test.h"
-#include "../moon.h"
-#include "../date_converters.h"
+#include "moon.h"
+#include "date_converters.h"
 
 void get_moon_ecliptic_positionl_test(void)
 {

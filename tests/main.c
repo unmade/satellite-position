@@ -2,17 +2,17 @@
 #include <time.h>
 
 #include "date_converters.h"
-#include "tests/rotation_matrix_test.h"
-#include "tests/matrix_operations_test.h"
-#include "tests/date_converters_test.h"
-#include "tests/precession_test.h"
-#include "tests/nutation_test.h"
-#include "tests/coordinates_converters_test.h"
-#include "tests/moon_test.h"
-#include "tests/sun_test.h"
-#include "tests/forces_test.h"
 #include "propagate.h"
-#include "tests/propagation_test.h"
+
+#include "rotation_matrix_test.h"
+#include "matrix_operations_test.h"
+#include "date_converters_test.h"
+#include "precession_test.h"
+#include "nutation_test.h"
+#include "coordinates_converters_test.h"
+#include "moon_test.h"
+#include "sun_test.h"
+#include "forces_test.h"
 
 int main() {
 
@@ -26,7 +26,7 @@ int main() {
     test_moon();
     test_sun();
     test_forces();
-    test_propagation();
+//    test_propagation();
 
 
     long double start_date = utc_to_mjd(2015, 5, 14, 6, 0, 0);

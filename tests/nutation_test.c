@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <math.h>
 #include "nutation_test.h"
-#include "../nutation.h"
+#include "nutation.h"
 
 void get_eps_meanl_test(void)
 {

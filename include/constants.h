@@ -36,19 +36,6 @@
 //#define KR 1.5
 #define CREFL (10e-3 * P0 * KR * (Sb / 1e7))
 
-//static long double const PI2 = 2 * (long double)M_PI; ///< π умноженное на два
-//static long double const SEC_IN_RAD = (2 * (long double)M_PI) / 1296000.0L; ///< Кол-во секунд в радиане
-//static long double const RAD_IN_SEC = (long double)1296000.0L / (2 * (long double)M_PI); ///< Кол-во радиан в секунде
-//static long double const GRAD_IN_RAD = (long double)M_PI / 180.0L; ///< Кол-во радиан в градусе
-//static long double const SEC_IN_GRAD = 3600; ///< Кол-во угловых секунд в градусе
-
-//static long double const FM = 3.986004415e5L; ///< Геоцентрическая гравитационная постоянная [км^3 / с^2]
-//static long double const R0 = 6.378136300e3L; ///< Экваториальный радиус Земли [км]
-//static long double const AU = 149597870.691L; ///< 1 а.е.
-
-//static long double const FM_M = 4.902799e03L; ///< Гравитационная постоянная на массу Луны [км^3 / с^2]
-//static long double const FM_S = 1.32712438e11L; ///< Гравитационная постоянная на массу Солнца [км^3 / с^2]
-//static long double const P0 = 4.5606e-06L; ///< Давление солнечного света на среднем расстоянии Земли от Солнца [н / м^2]
 
 static long double const N_MAX = 12; ///< Порядок, до которого учитываются гармоники
 

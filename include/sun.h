@@ -1,6 +1,6 @@
-//
-// Created by Леша on 29.05.15.
-//
+/** \file sun.h
+ * Файл определяет функции для вычисления положения Солнца
+ */
 
 #ifndef SATELLITE_PROPAGATION_SUN_H
 #define SATELLITE_PROPAGATION_SUN_H

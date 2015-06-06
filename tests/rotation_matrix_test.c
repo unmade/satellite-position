@@ -7,8 +7,7 @@
 #include "assert.h"
 
 #include "rotation_matrix_test.h"
-#include "../rotation_matrix.h"
-#include "../matrix_operations.h"
+#include "rotation_matrix.h"
 
 void test_rotxl(void)
 {

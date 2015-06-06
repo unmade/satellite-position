@@ -5,8 +5,8 @@
 #include <assert.h>
 #include <math.h>
 #include "sun_test.h"
-#include "../sun.h"
-#include "../constants.h"
+#include "sun.h"
+#include "constants.h"
 
 void get_sun_ecliptic_positionl_test(void)
 {

@@ -3,9 +3,9 @@
 //
 
 #include "forces.h"
-#include "../constants.h"
-#include "../sun.h"
-#include "../date_converters.h"
+#include "constants.h"
+#include "sun.h"
+#include "date_converters.h"
 
 
 void get_acceleration_by_sunl(long double utc_in_mjd, long double celes_coord[3],

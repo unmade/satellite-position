@@ -4,9 +4,9 @@
 
 #include <math.h>
 #include "forces.h"
-#include "../constants.h"
-#include "../sun.h"
-#include "../date_converters.h"
+#include "constants.h"
+#include "sun.h"
+#include "date_converters.h"
 
 void get_acceleration_by_atmospherel(long double coord[3], long double vel[3], long double acceleration[3])
 {

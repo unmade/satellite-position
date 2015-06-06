@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <math.h>
 #include "forces_test.h"
-#include "../forces/forces.h"
+#include "forces.h"
 
 void get_acceleration_by_earthl_test(void)
 {

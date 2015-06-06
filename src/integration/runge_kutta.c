@@ -3,8 +3,8 @@
 //
 
 #include "integration.h"
-#include "../constants.h"
-#include "../forces/forces.h"
+#include "constants.h"
+#include "forces.h"
 
 
 static const double COEFF[4] = {

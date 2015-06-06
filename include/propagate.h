@@ -1,6 +1,7 @@
-//
-// Created by Леша on 31.05.15.
-//
+/** \file propagate.h
+ * Файл определяет функции для прогнозирования положения и скорости
+ * небесного тела на заданный момент времени
+ */
 
 #ifndef SATELLITE_PROPAGATION_PROPAGATE_H
 #define SATELLITE_PROPAGATION_PROPAGATE_H
