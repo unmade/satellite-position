@@ -4,8 +4,8 @@
 
 #include <math.h>
 #include "date_converters.h"
-#include "../constants.h"
-#include "../nutation.h"
+#include "constants.h"
+#include "nutation.h"
 
 #define TT_TAI_DIFF 32.18400000000000000000000
 
@@ -316,6 +316,7 @@ void days_to_hms(double days, int *nhour, int *nminute, double *nsecond)
 long double get_deltaTl(int nyear, int nmonth)
 {
     int leap_second = 0;
+
     switch(nyear)
     {
         case 1972:
@@ -388,6 +389,7 @@ long double get_deltaTl(int nyear, int nmonth)
             break;
         case 1996:
             leap_second = 30;
+            break;
         case 1997:
             leap_second = (0 < nmonth && nmonth < 7) ? 30 : 31;
             break;

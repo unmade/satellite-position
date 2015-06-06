@@ -45,11 +45,11 @@ void get_fund_args_test(void)
     double fund_args[5];
     get_fund_args(59000.5, fund_args);
 
-    assert(fabs(fabs(fund_args[0]) - 3.168269813460137) < 1e-15);
-    assert(fabs(fabs(fund_args[1]) - 6.0659050554748655) < 1e-15);
-    assert(fabs(fabs(fund_args[2]) - 2.5510330536033843) < 1e-15);
-    assert(fabs(fabs(fund_args[3]) - 1.5936104120008014) < 1e-15);
-    assert(fabs(fabs(fund_args[4])- 1.9560899054570753) < 1e-15);
+    assert(fabs(fabs(fund_args[0]) - 3.168269813460137) < 1e-11);
+    assert(fabs(fabs(fund_args[1]) - 6.0659050554748655) < 1e-11);
+    assert(fabs(fabs(fund_args[2]) - 2.5510330536033843) < 1e-11);
+    assert(fabs(fabs(fund_args[3]) - 1.5936104120008014) < 1e-11);
+    assert(fabs(fabs(fund_args[4])- 1.9560899054570753) < 1e-11);
 
     return;
 }
@@ -74,11 +74,11 @@ void get_corr_fund_args_test(void)
     double fund_args[5];
     get_corr_fund_args(59000.5, fund_args);
 
-    assert(fabs(fabs(fund_args[0]) - 3.1683495926198453) < 1e-15);
-    assert(fabs(fabs(fund_args[1]) - 6.0660073559339365) < 1e-15);
-    assert(fabs(fabs(fund_args[2]) - 2.5509953168599471) < 1e-15);
-    assert(fabs(fabs(fund_args[3]) - 1.5932158110003973) < 1e-15);
-    assert(fabs(fabs(fund_args[4]) - 1.9562074213602212) < 1e-15);
+    assert(fabs(fabs(fund_args[0]) - 3.1683495926198453) < 1e-12);
+    assert(fabs(fabs(fund_args[1]) - 6.0660073559339365) < 1e-12);
+    assert(fabs(fabs(fund_args[2]) - 2.5509953168599471) < 1e-12);
+    assert(fabs(fabs(fund_args[3]) - 1.5932158110003973) < 1e-12);
+    assert(fabs(fabs(fund_args[4]) - 1.9562074213602212) < 1e-12);
 
     return;
 }

@@ -43,7 +43,7 @@ void get_sun_ecliptic_positionl(long double tdb, long double *l, long double *b,
 
     dl = 0.0 ; dr = 0.0; db = 0.0; // { initial nullo corrections }
 
-    //{ keplerian terms and perturbations by Venus }
+////    { keplerian terms and perturbations by Venus }
 //    dl = -0.22*cosl(um3) + 6892.76*sinl(um3)
 //         +(-0.06*cosl(um3) - 17.35*sinl(um3))*ts
 //         +(-0.01*cosl(um3) - 0.05*sinl(um3))*ts*ts
@@ -721,6 +721,7 @@ void get_sun_celestial_positionl(long double tdb, long double coordinates[3])
     long double l, b, r;
     long double eps;
     long double se[3], Rx[3][3], precession[3][3], m_pt[3][3], R[3][3];
+    int i;
 
     get_sun_ecliptic_positionl(tdb, &l, &b, &r);
     spherical_to_cartesianl(l, b, r, se);
@@ -735,6 +736,9 @@ void get_sun_celestial_positionl(long double tdb, long double coordinates[3])
 
     mult_matrix_by_vectorl(R, se, coordinates);
 
+    for (i = 0; i < 3; i++)
+        coordinates[i] *= AU;
+
     return;
 }
 
@@ -744,6 +748,7 @@ void get_sun_celestial_position(double tdb, double coordinates[3])
     double l, b, r;
     double eps;
     double se[3], Rx[3][3], precession[3][3], m_pt[3][3], R[3][3];
+    int i;
 
     get_sun_ecliptic_position(tdb, &l, &b, &r);
     spherical_to_cartesian(l, b, r, se);
@@ -757,6 +762,9 @@ void get_sun_celestial_position(double tdb, double coordinates[3])
     mult_matrices(m_pt, Rx, R);
 
     mult_matrix_by_vector(R, se, coordinates);
+
+    for (i = 0; i < 3; i++)
+        coordinates[i] *= AU;
 
     return;
 }

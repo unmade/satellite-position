@@ -28,9 +28,9 @@ void test_rotxl(void)
     assert(matr[2][1] == -sinl(angle));
     assert(matr[2][2] == cosl(angle));
 
-    printf("Угол a = %2.15f\n", (double)angle);
-    printf("Матрица поворота по ОХ:\n");
-    print_matrixl((long double *) matr, 3, 3);
+//    printf("Угол a = %2.15f\n", (double)angle);
+//    printf("Матрица поворота по ОХ:\n");
+//    print_matrixl((long double *) matr, 3, 3);
 }
 
 
@@ -52,9 +52,9 @@ void test_rotx(void)
     assert(matr[2][1] == -sin(angle));
     assert(matr[2][2] == cos(angle));
 
-    printf("Угол a = %2.15f\n", angle);
-    printf("Матрица поворота по ОХ:\n");
-    print_matrix((double *) matr, 3, 3);
+//    printf("Угол a = %2.15f\n", angle);
+//    printf("Матрица поворота по ОХ:\n");
+//    print_matrix((double *) matr, 3, 3);
 }
 
 
@@ -76,9 +76,9 @@ void test_rotyl(void)
     assert(matr[2][1] == 0.0L);
     assert(matr[2][2] == cosl(angle));
 
-    printf("Угол a = %2.15f\n", (double)angle);
-    printf("Матрица поворота по ОY:\n");
-    print_matrixl((long double *) matr, 3, 3);
+//    printf("Угол a = %2.15f\n", (double)angle);
+//    printf("Матрица поворота по ОY:\n");
+//    print_matrixl((long double *) matr, 3, 3);
 }
 
 
@@ -100,9 +100,9 @@ void test_roty(void)
     assert(matr[2][1] == 0.0);
     assert(matr[2][2] == cos(angle));
 
-    printf("Угол a = %2.15f\n", angle);
-    printf("Матрица поворота по ОY:\n");
-    print_matrix((double *) matr, 3, 3);
+//    printf("Угол a = %2.15f\n", angle);
+//    printf("Матрица поворота по ОY:\n");
+//    print_matrix((double *) matr, 3, 3);
 }
 
 
@@ -124,9 +124,9 @@ void test_rotzl(void)
     assert(matr[2][1] == 0.0L);
     assert(matr[2][2] == 1.0L);
 
-    printf("Угол a = %2.15f\n", (double)angle);
-    printf("Матрица поворота по ОZ:\n");
-    print_matrixl( (long double *) matr, 3, 3);
+//    printf("Угол a = %2.15f\n", (double)angle);
+//    printf("Матрица поворота по ОZ:\n");
+//    print_matrixl( (long double *) matr, 3, 3);
 }
 
 
@@ -148,9 +148,9 @@ void test_rotz(void)
     assert(matr[2][1] == 0.0);
     assert(matr[2][2] == 1.0);
 
-    printf("Угол a = %2.15f\n", angle);
-    printf("Матрица поворота по ОZ:\n");
-    print_matrix((double *) matr, 3, 3);
+//    printf("Угол a = %2.15f\n", angle);
+//    printf("Матрица поворота по ОZ:\n");
+//    print_matrix((double *) matr, 3, 3);
 }
 
 

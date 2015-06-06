@@ -5,7 +5,7 @@
 #include <math.h>
 #include <assert.h>
 #include "propagation_test.h"
-#include "../date_converters/date_converters.h"
+#include "../date_converters.h"
 #include "../propagate.h"
 
 void propagatel_test(void)
@@ -23,9 +23,9 @@ void propagatel_test(void)
 
     propagatel(62.0L, start_date, end_date, pos, vel, fin_pos, fin_vel);
 
-    assert(fabsl(fabsl(fin_pos[0]) - 33066.259498924905L) < 1e-11);
-    assert(fabsl(fabsl(fin_pos[1]) - 26154.874481927356L) < 1e-11);
-    assert(fabsl(fabsl(fin_pos[2]) - 484.72224379488227L) < 1e-13);
+    assert(fabsl(fabsl(fin_pos[0]) - 33066.259498924905L) < 1e-4);
+    assert(fabsl(fabsl(fin_pos[1]) - 26154.874481927356L) < 1e-4);
+    assert(fabsl(fabsl(fin_pos[2]) - 484.72224379488227L) < 1e-4);
 
     return;
 }
@@ -45,9 +45,9 @@ void propagate_test(void)
 
     propagate(62.0, start_date, end_date, pos, vel, fin_pos, fin_vel);
 
-    assert(fabsl(fabsl(fin_pos[0]) - 33066.259498925123) < 1e-11);
-    assert(fabsl(fabsl(fin_pos[1]) - 26154.874481926909) < 1e-11);
-    assert(fabsl(fabsl(fin_pos[2]) - 484.7222437948206) < 1e-13);
+    assert(fabs(fabs(fin_pos[0]) - 33066.259498923195) < 1e-4);
+    assert(fabs(fabs(fin_pos[1]) - 26154.874481928142) < 1e-4);
+    assert(fabs(fabs(fin_pos[2]) - 484.72224379478911) < 1e-4);
 
     return;
 }

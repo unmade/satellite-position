@@ -5,10 +5,11 @@
 #include <math.h>
 #include "coordinates_converters.h"
 #include "matrix_operations.h"
-#include "date_converters/date_converters.h"
+#include "date_converters.h"
 #include "precession.h"
 #include "nutation.h"
 #include "rotation_matrix.h"
+#include "constants.h"
 
 void get_mean_equ_to_fixed_matrixl(long double precession_matrix[3][3], long double m_p[3][3])
 {
@@ -119,6 +120,36 @@ void spherical_to_cartesian(double l, double b, double r,
     coordinates[0] = r * cos(b) * cos(l);
     coordinates[1] = r * cos(b) * sin(l);
     coordinates[2] = r * sin(b);
+
+    return;
+}
+
+
+void geodesic_to_cartesianl(long double phi, long double lambda, long double h,
+                            long double coordinates[3])
+{
+    long double g, e2;
+
+    e2 = 2*A0 - A0*A0;
+    g = R0 / sqrtl(1 - e2*powl(sinl(phi), 2));
+    coordinates[0] = (g + h) * cosl(phi) * cosl(lambda);
+    coordinates[1] = (g + h) * cosl(phi) * sinl(lambda);
+    coordinates[2] = (g * (1 - e2) + h) * sinl(phi);
+    
+    return;
+}
+
+
+void geodesic_to_cartesian(double phi, double lambda, double h,
+                           double coordinates[3])
+{
+    double g, e2;
+
+    e2 = 2*A0 - A0*A0;
+    g = R0 / sqrt(1 - e2*pow(sin(phi), 2));
+    coordinates[0] = (g + h) * cos(phi) * cos(lambda);
+    coordinates[1] = (g + h) * cos(phi) * sin(lambda);
+    coordinates[2] = (g * (1 - e2) + h) * sin(phi);
 
     return;
 }

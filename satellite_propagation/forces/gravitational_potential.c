@@ -2,13 +2,13 @@
 // Created by Леша on 25.05.15.
 //
 
-#include "gravitational_potential.h"
+#include "forces.h"
 #include "../constants.h"
 #include "../coordinates_converters.h"
 #include "../matrix_operations.h"
 
 
-void get_z_and_dzl(long double z, long double r, long double Z[13][13], long double dZ[13][13])
+static void get_z_and_dzl(long double z, long double r, long double Z[13][13], long double dZ[13][13])
 {
     long double zr;
     int n, k;
@@ -27,7 +27,6 @@ void get_z_and_dzl(long double z, long double r, long double Z[13][13], long dou
     Z[2][0] = 1.5 * powl(zr, 2) - 0.5;
     dZ[2][0] = 3 * (zr);
 
-
     for (n = 3; n <= N_MAX; n++)
     {
         Z[n][0] = (2*n - 1)*z / (n*r) * Z[n-1][0] - (n-1)*Z[n-2][0] / n;
@@ -39,16 +38,15 @@ void get_z_and_dzl(long double z, long double r, long double Z[13][13], long dou
         for (n = 1; n <= N_MAX; n++)
         {
             Z[n][k] = dZ[n][k-1];
-        }
-        for (n = k + 1; n <= N_MAX; n++)
-        {
-            dZ[n][k] = (2*n - 1) * Z[n-1][k] + dZ[n-2][k];
+            if (n >= k+1) {
+                dZ[n][k] = (2 * n - 1) * Z[n - 1][k] + dZ[n - 2][k];
+            }
         }
     }
 }
 
 
-void get_z_and_dz(double z, double r, double Z[13][13], double dZ[13][13])
+static void get_z_and_dz(double z, double r, double Z[13][13], double dZ[13][13])
 {
     double zr;
     int n, k;
@@ -87,7 +85,7 @@ void get_z_and_dz(double z, double r, double Z[13][13], double dZ[13][13])
 }
 
 
-void get_xy_and_dxyl(long double x, long double y, long double r,
+static void get_xy_and_dxyl(long double x, long double y, long double r,
                      long double X[13], long double dX_xr[13], long double dX_yr[13],
                      long double Y[13], long double dY_xr[13], long double dY_yr[13])
 {
@@ -112,7 +110,7 @@ void get_xy_and_dxyl(long double x, long double y, long double r,
 }
 
 
-void get_xy_and_dxy(double x, double y, double r,
+static void get_xy_and_dxy(double x, double y, double r,
                     double X[13], double dX_xr[13], double dX_yr[13],
                     double Y[13], double dY_xr[13], double dY_yr[13])
 {

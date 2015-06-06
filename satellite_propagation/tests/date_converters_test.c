@@ -4,7 +4,7 @@
 
 #include <assert.h>
 #include "date_converters_test.h"
-#include "../date_converters/date_converters.h"
+#include "../date_converters.h"
 #include "../constants.h"
 
 void utc_to_mjdl_test(void)

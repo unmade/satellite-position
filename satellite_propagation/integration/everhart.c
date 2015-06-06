@@ -3,27 +3,25 @@
 //
 
 #include <math.h>
-#include "everhart.h"
-#include "forces/gravitational_potential.h"
-#include "forces/moon_forces.h"
-#include "forces/sun_forces.h"
-#include "constants.h"
+#include "integration.h"
+#include "../constants.h"
+#include "../forces/forces.h"
 
 
 const int N = 8;
-const long double h[8] =
+static const long double h[8] =
         {
                 0.000000000000000000L,
-                0.056262560526922147L,
-                0.180240691736892365L,
-                0.352624717113169637L,
-                0.547153626330555383L,
-                0.734210177215410532L,
-                0.885320946839095768L,
-                0.977520613561287501L
+                0.0562625605269221464656522L,
+                0.1802406917368923649875799L,
+                0.3526247171131696373739078L,
+                0.5471536263305553830014486L,
+                0.7342101772154105315232106L,
+                0.8853209468390957680903598L,
+                0.9775206135612875018911745L
         };
 
-const long double R_coeff[7] =
+static const long double R_coeff[7] =
         {
                 0.166666666666666667L,
                 0.083333333333333333L,
@@ -35,7 +33,7 @@ const long double R_coeff[7] =
         };
 
 
-const long double V_coeff[7] =
+static const long double V_coeff[7] =
         {
                 0.500000000000000000L,
                 0.333333333333333333L,
@@ -47,56 +45,7 @@ const long double V_coeff[7] =
         };
 
 
-void get_forcesl(long double t, long double pos[3], long double acceleration[3])
-{
-    long double acc[3];
-
-    acceleration[0] = 0; acceleration[1] = 0; acceleration[2] = 0;
-
-    get_acceleration_by_earthl(t, pos, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
-
-    get_acceleration_by_moonl(t, pos, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
-
-    get_acceleration_by_sunl(t, pos, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
-
-    return;
-}
-
-void get_forces(double t, double pos[3], double acceleration[3])
-{
-    double acc[3];
-
-    acceleration[0] = 0; acceleration[1] = 0; acceleration[2] = 0;
-
-    get_acceleration_by_earth(t, pos, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
-
-    get_acceleration_by_moon(t, pos, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
-
-    get_acceleration_by_sun(t, pos, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
-
-    return;
-}
-
-
-void getcl(long double t[8], long double c[8][8])
+static void getcl(long double t[8], long double c[8][8])
 {
     int i, j;
 
@@ -121,7 +70,7 @@ void getcl(long double t[8], long double c[8][8])
     return;
 }
 
-void getc(double t[8], double c[8][8])
+static void getc(double t[8], double c[8][8])
 {
     int i, j;
 
@@ -147,11 +96,11 @@ void getc(double t[8], double c[8][8])
 }
 
 
-void get_Al(long double A[7][3], long double alpha[7][3], long double c[8][8], int curr_substep)
+static void get_Al(long double A[7][3], long double alpha[7][3], long double c[8][8])
 {
     int i, j, k;
 
-    for (i = 0; i < curr_substep; i++)
+    for (i = 0; i < 7; i++)
     {
         for (j = 0; j < 3; j++)
         {
@@ -164,11 +113,11 @@ void get_Al(long double A[7][3], long double alpha[7][3], long double c[8][8], i
     }
 }
 
-void get_A(double A[7][3], double alpha[7][3], double c[8][8], int curr_substep)
+static void get_A(double A[7][3], double alpha[7][3], double c[8][8])
 {
     int i, j, k;
 
-    for (i = 0; i < curr_substep; i++)
+    for (i = 0; i < 7; i++)
     {
         for (j = 0; j < 3; j++)
         {
@@ -182,7 +131,7 @@ void get_A(double A[7][3], double alpha[7][3], double c[8][8], int curr_substep)
 }
 
 
-void calc_new_posl(long double t,
+static void calc_new_posl(long double t,
                    long double pos[3], long double vel[3],
                    long double accel[3], long double A[7][3],
                    long double new_coord[3], long double new_vel[3])
@@ -201,7 +150,7 @@ void calc_new_posl(long double t,
     }
 }
 
-void calc_new_pos(double t,
+static void calc_new_pos(double t,
                   double pos[3], double vel[3],
                   double accel[3], double A[7][3],
                   double new_coord[3], double new_vel[3])
@@ -221,7 +170,7 @@ void calc_new_pos(double t,
 }
 
 
-void get_alphal(long double F[3], long double F1[3], long double t[8], long double a[7][3], int curr_substep)
+static void get_alphal(long double F[3], long double F1[3], long double t[8], long double a[7][3], int curr_substep)
 {
     int i, j;
 
@@ -236,7 +185,7 @@ void get_alphal(long double F[3], long double F1[3], long double t[8], long doub
     }
 }
 
-void get_alpha(double F[3], double F1[3], double t[8], double a[7][3], int curr_substep)
+static void get_alpha(double F[3], double F1[3], double t[8], double a[7][3], int curr_substep)
 {
     int i, j;
 
@@ -252,41 +201,39 @@ void get_alpha(double F[3], double F1[3], double t[8], double a[7][3], int curr_
 }
 
 
-void do_everhartl(long double utc_in_mjd, long double step, long double start_pos[3], long double start_vel[3],
-                  long double final_pos[3], long double fin_vel[3], long double alpha[7][3])
+void everhartl(long double utc_in_mjd, long double step, long double start_pos[3], long double start_vel[3],
+               long double final_pos[3], long double fin_vel[3], long double alpha[7][3])
 {
     long double t[8], c[8][8];
     long double A[7][3];
     long double new_pos[3], new_vel[3];
     long double F1[3], F[3];
-    int i, j;
-
+    int i;
     for (i = 0; i < N; i++)
         t[i] = h[i] * step;
 
     getcl(t, c);
 
-    for (i = 0; i < 7; i++)
-        for (j = 0; j < 3; j++)
-            A[i][j] = 0;
+    get_Al(A, alpha, c);
+    get_forcesl(utc_in_mjd + t[0] / SEC_IN_DAY, start_pos, start_vel, F1);
 
-    get_forcesl(utc_in_mjd + t[0] / SEC_IN_DAY, start_pos, F1);
-
-    for (i = 1; i < N; i++)
-    {
-        calc_new_posl(t[i], start_pos, start_vel, F1, A, new_pos, new_vel);
-        get_forcesl(utc_in_mjd + t[i] / SEC_IN_DAY, new_pos, F);
-        get_alphal(F, F1, t, alpha, i);
-        get_Al(A, alpha, c, i);
-    }
+//    for (j = 0; j < 3; j++) {
+        for (i = 1; i < N; i++)
+        {
+            calc_new_posl(t[i], start_pos, start_vel, F1, A, new_pos, new_vel);
+            get_forcesl(utc_in_mjd + t[i] / SEC_IN_DAY, new_pos, new_vel, F);
+            get_alphal(F, F1, t, alpha, i);
+            get_Al(A, alpha, c);
+        }
+//    }
 
     calc_new_posl(step, start_pos, start_vel, F1, A, final_pos, fin_vel);
 
     return;
 }
 
-void do_everhart(double utc_in_mjd, double step, double start_pos[3], double start_vel[3],
-                 double final_pos[3], double fin_vel[3], double alpha[7][3])
+void everhart(double utc_in_mjd, double step, double start_pos[3], double start_vel[3],
+              double final_pos[3], double fin_vel[3], double alpha[7][3])
 {
     double t[8], c[8][8];
     double A[7][3];
@@ -303,14 +250,14 @@ void do_everhart(double utc_in_mjd, double step, double start_pos[3], double sta
         for (j = 0; j < 3; j++)
             A[i][j] = 0;
 
-    get_forces(utc_in_mjd + t[0] / SEC_IN_DAY, start_pos, F1);
+    get_forces(utc_in_mjd + t[0] / SEC_IN_DAY, start_pos, start_vel, F1);
 
     for (i = 1; i < N; i++)
     {
         calc_new_pos(t[i], start_pos, start_vel, F1, A, new_pos, new_vel);
-        get_forces(utc_in_mjd + t[i] / SEC_IN_DAY, new_pos, F);
+        get_forces(utc_in_mjd + t[i] / SEC_IN_DAY, new_pos, new_vel, F);
         get_alpha(F, F1, t, alpha, i);
-        get_A(A, alpha, c, i);
+        get_A(A, alpha, c);
     }
 
     calc_new_pos(step, start_pos, start_vel, F1, A, final_pos, fin_vel);

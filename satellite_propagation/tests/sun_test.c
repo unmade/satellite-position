@@ -25,7 +25,7 @@ void get_sun_ecliptic_position_test(void)
 {
     double l, b, r;
     get_sun_ecliptic_position(58651.11532621, &l, &b, &r);
-    assert(fabs(fabs(l) - 1.4952254608931084) < 1e-15);
+    assert(fabs(fabs(l) - 1.4952254608931084) < 1e-12);
     assert(fabs(fabs(b) - 3.5932090028843685e-007) < 1e-15);
     assert(fabs(fabs(r*AU) - 151974058.51469302) < 1e-7);
 
@@ -37,10 +37,6 @@ void get_sun_celestial_positionl_test(void)
 {
     long double coord[3];
     get_sun_celestial_positionl(58651.11532621L, coord);
-
-    coord[0] *= AU;
-    coord[1] *= AU;
-    coord[2] *= AU;
 
     assert(fabsl(fabsl(coord[0]) - 12192677.054444425L) < 1e-8);
     assert(fabsl(fabsl(coord[1]) - 138986664.55175757L) < 1e-8);
@@ -54,12 +50,8 @@ void get_sun_celestial_position_test(void)
     double coord[3];
     get_sun_celestial_position(58651.11532621, coord);
 
-    coord[0] *= AU;
-    coord[1] *= AU;
-    coord[2] *= AU;
-
-    assert(fabs(fabs(coord[0]) - 12192677.054448647) < 1e-8);
-    assert(fabs(fabs(coord[1]) - 138986664.55175722) < 1e-8);
+    assert(fabs(fabs(coord[0]) - 12192677.054448647) < 1e-6);
+    assert(fabs(fabs(coord[1]) - 138986664.55175722) < 1e-6);
     assert(fabs(fabs(coord[2]) - 60250810.487914428) < 1e-8);
 
     return;

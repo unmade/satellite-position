@@ -5,9 +5,7 @@
 #include <assert.h>
 #include <math.h>
 #include "forces_test.h"
-#include "../forces/gravitational_potential.h"
-#include "../forces/moon_forces.h"
-#include "../forces/sun_forces.h"
+#include "../forces/forces.h"
 
 void get_acceleration_by_earthl_test(void)
 {
@@ -57,9 +55,9 @@ void get_acceleration_by_moonl_test(void)
 
     get_acceleration_by_moonl(utc_in_mjd, coord, acceleration);
 
-    assert(fabsl(fabsl(acceleration[0]) - 5.7471616135213636e-011L) < 1e-18);
-    assert(fabsl(fabsl(acceleration[1]) - 4.04687450961552e-009L) < 1e-18);
-    assert(fabsl(fabsl(acceleration[2]) - 1.8596245001814748e-009L) < 1e-18);
+    assert(fabsl(fabsl(acceleration[0]) - 5.7471499870040367575e-11L) < 1e-18);
+    assert(fabsl(fabsl(acceleration[1]) - 4.0468814090081801167e-09L) < 1e-18);
+    assert(fabsl(fabsl(acceleration[2]) - 1.8596276722038470893e-09L) < 1e-18);
 
     return;
 }
@@ -74,9 +72,9 @@ void get_acceleration_by_moon_test(void)
     coord[2] = 105.030427;
 
     get_acceleration_by_moon(utc_in_mjd, coord, acceleration);
-    assert(fabs(fabs(acceleration[0]) - 5.7471616130976649e-011) < 1e-18);
-    assert(fabs(fabs(acceleration[1]) - 4.0468745096169593e-009) < 1e-18);
-    assert(fabs(fabs(acceleration[2]) - 1.8596245001819094e-009) < 1e-18);
+    assert(fabs(fabs(acceleration[0]) - 5.7471499863764875e-11) < 1e-18);
+    assert(fabs(fabs(acceleration[1]) - 4.0468814090103113e-09) < 1e-18);
+    assert(fabs(fabs(acceleration[2]) - 1.8596276722046323e-09) < 1e-18);
 
     return;
 }

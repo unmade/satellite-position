@@ -18,7 +18,7 @@
  * @param[out] final_vel Конечный вектор скорости в небесной СК
  *
  */
-void propagatel(int step, long double start_date, long double end_date,
+void propagatel(long double step, long double start_date, long double end_date,
                 long double start_pos[3], long double start_vel[3],
                 long double final_pos[3], long double final_vel[3]);
 
@@ -36,7 +36,7 @@ void propagatel(int step, long double start_date, long double end_date,
  * @param[out] final_vel Конечный вектор скорости в небесной СК
  *
  */
-void propagate(int step, double start_date, double end_date,
+void propagate(double step, double start_date, double end_date,
                double start_pos[3], double start_vel[3],
                double final_pos[3], double final_vel[3]);
 

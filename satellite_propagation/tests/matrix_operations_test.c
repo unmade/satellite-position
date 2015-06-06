@@ -2,6 +2,7 @@
 // Created by user on 03.06.2015.
 //
 
+#include <math.h>
 #include "assert.h"
 
 #include "matrix_operations_test.h"
@@ -20,17 +21,17 @@ void mult_matricesl_test(void)
 
     mult_matricesl(a, b, c);
     
-    assert(c[0][0] = 39.405L);
-    assert(c[0][1] = 112.083L);
-    assert(c[0][2] = 89.112L);
+    assert(fabsl(fabsl(c[0][0]) - 39.9405L) < 1e-15L);
+    assert(fabsl(fabsl(c[0][1]) - 112.083L) < 1e-15L);
+    assert(fabsl(fabsl(c[0][2]) - 89.122L) < 1e-15L);
 
-    assert(c[1][0] = 25.1174L);
-    assert(c[1][1] = 69.3452L);
-    assert(c[1][2] = 57.1432L);
+    assert(fabsl(fabsl(c[1][0]) - 25.1174L) < 1e-15L);
+    assert(fabsl(fabsl(c[1][1]) - 69.3452L) < 1e-15L);
+    assert(fabsl(fabsl(c[1][2]) - 57.1432L) < 1e-15L);
 
-    assert(c[3][0] = 63.89614L);
-    assert(c[3][1] = 189.30852L);
-    assert(c[3][1] = 139.886L);
+    assert(fabsl(fabsl(c[2][0]) - 63.89614L) < 1e-15L);
+    assert(fabsl(fabsl(c[2][1]) - 189.30852L) < 1e-15L);
+    assert(fabsl(fabsl(c[2][2]) - 139.886L) < 1e-15L);
 
     return;
 }
@@ -49,17 +50,17 @@ void mult_matrices_test(void)
 
     mult_matrices(a, b, c);
 
-    assert(c[0][0] = 39.405);
-    assert(c[0][1] = 112.083);
-    assert(c[0][2] = 89.112);
+    assert(fabs(fabs(c[0][0]) - 39.9405) < 1e-4);
+    assert(fabs(fabs(c[0][1]) - 112.083) < 1e-3);
+    assert(fabs(fabs(c[0][2]) - 89.122) < 1e-3);
 
-    assert(c[1][0] = 25.1174);
-    assert(c[1][1] = 69.3452);
-    assert(c[1][2] = 57.1432);
+    assert(fabs(fabs(c[1][0]) - 25.1174) < 1e-4);
+    assert(fabs(fabs(c[1][1]) - 69.3452) < 1e-4);
+    assert(fabs(fabs(c[1][2]) - 57.1432) < 1e-4);
 
-    assert(c[3][0] = 63.89614);
-    assert(c[3][1] = 189.30852);
-    assert(c[3][1] = 139.886);
+    assert(fabs(fabs(c[2][0]) - 63.89614) < 1e-5);
+    assert(fabs(fabs(c[2][1]) - 189.30852) < 1e-5);
+    assert(fabs(fabs(c[2][2]) - 139.886) < 1e-3);
 
     return;
 }
@@ -93,9 +94,9 @@ void mult_matrix_by_vector_test(void)
 
     mult_matrix_by_vector(matr, vec, res_vec);
 
-    assert(res_vec[0] == 23.0285);
-    assert(res_vec[1] == 14.2714);
-    assert(res_vec[2] == 36.80014);
+    assert(res_vec[0] == (matr[0][0]*vec[0] + matr[0][1]*vec[1] + matr[0][2]*vec[2]));
+    assert(res_vec[1] == (matr[1][0]*vec[0] + matr[1][1]*vec[1] + matr[1][2]*vec[2]));
+    assert(res_vec[2] == (matr[2][0]*vec[0] + matr[2][1]*vec[1] + matr[2][2]*vec[2]));
 
     return;
 }

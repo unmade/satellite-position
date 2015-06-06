@@ -140,4 +140,30 @@ void spherical_to_cartesianl(long double l, long double b, long double r,
  */
 void spherical_to_cartesian(double l, double b, double r, double coordinates[3]);
 
+
+/**
+ * Функция реализует переход из геодезической в декартову (прямоугольную) СК
+ *
+ * @param[in] phi Широта [рад]
+ * @param[in] lambda Долгота  [рад]
+ * @param[in] h Высота  [километр]
+ * @param[out] coordinates Содержит прямоугольные коор-ты x, y, z соответственно [километр]
+ *
+ */
+void geodesic_to_cartesianl(long double phi, long double lambda, long double h,
+                            long double coordinates[3]);
+
+
+/**
+ * Функция реализует переход из геодезической в декартову (прямоугольную) СК
+ *
+ * @param[in] phi Широта [рад]
+ * @param[in] lambda Долгота  [рад]
+ * @param[in] h Высота  [километр]
+ * @param[out] coordinates Содержит прямоугольные коор-ты x, y, z соответственно [километр]
+ *
+ */
+void geodesic_to_cartesian(double phi, double lambda, double h,
+                           double coordinates[3]);
+
 #endif //SATELLITE_PROPAGATION_COORDINATES_CONVERTERS_H

@@ -3,8 +3,8 @@
 //
 
 #include <math.h>
-#include "moon_forces.h"
-#include "../date_converters/date_converters.h"
+#include "forces.h"
+#include "../date_converters.h"
 #include "../moon.h"
 #include "../constants.h"
 
@@ -20,10 +20,10 @@ void get_acceleration_by_moonl(long double utc_in_mjd, long double celes_coord[3
     get_moon_celestial_positionl(tdb, moon_coord);
 
     r = sqrtl(powl(moon_coord[0], 2) + powl(moon_coord[1], 2) + powl(moon_coord[2], 2));
-    r3 = powl(r, 3);
     r0 = sqrtl(powl(moon_coord[0]- celes_coord[0], 2) 
                + powl(moon_coord[1] - celes_coord[1], 2)
                + powl(moon_coord[2] - celes_coord[2], 2));
+    r3 = powl(r, 3);
     r03 = powl(r0, 3);
 
 
@@ -46,10 +46,10 @@ void get_acceleration_by_moon(double utc_in_mjd, double celes_coord[3], double a
     get_moon_celestial_position(tdb, moon_coord);
 
     r = sqrt(pow(moon_coord[0], 2) + pow(moon_coord[1], 2) + pow(moon_coord[2], 2));
-    r3 = pow(r, 3);
     r0 = sqrt(pow(moon_coord[0]- celes_coord[0], 2)
                + pow(moon_coord[1] - celes_coord[1], 2)
                + pow(moon_coord[2] - celes_coord[2], 2));
+    r3 = pow(r, 3);
     r03 = pow(r0, 3);
 
 
