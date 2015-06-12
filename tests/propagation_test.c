@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <assert.h>
+#include <integration.h>
 #include "propagation_test.h"
 #include "date_converters.h"
 #include "propagate.h"
@@ -21,7 +22,7 @@ void propagatel_test(void)
     vel[1] = 2.44434537660644L;
     vel[2] = 0.0378635308063818L;
 
-    propagatel(62.0L, start_date, end_date, pos, vel, fin_pos, fin_vel);
+    propagatel(0, 62.0L, start_date, end_date, pos, vel, fin_pos, fin_vel);
 
     assert(fabsl(fabsl(fin_pos[0]) - 33066.259498924905L) < 1e-4);
     assert(fabsl(fabsl(fin_pos[1]) - 26154.874481927356L) < 1e-4);
@@ -43,7 +44,7 @@ void propagate_test(void)
     vel[1] = 2.44434537660644;
     vel[2] = 0.0378635308063818;
 
-    propagate(62.0, start_date, end_date, pos, vel, fin_pos, fin_vel);
+    propagate(0, 62.0, start_date, end_date, pos, vel, fin_pos, fin_vel);
 
     assert(fabs(fabs(fin_pos[0]) - 33066.259498923195) < 1e-4);
     assert(fabs(fabs(fin_pos[1]) - 26154.874481928142) < 1e-4);

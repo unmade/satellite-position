@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <math.h>
+#include <date_converters.h>
 #include "coordinates_converters_test.h"
 #include "coordinates_converters.h"
 #include "precession.h"
@@ -264,6 +265,75 @@ void spherical_to_cartesian_test(void)
 }
 
 
+void geodesic_to_terrestriall_test(void)
+{
+    long double coord[3];
+    long double phi = -0.00029715827835414411461261402589307395L;
+    long double lambda = -1.2603465153090979932164888976942052L;
+    long double H = 0.0L;
+    geodesic_to_terrestriall(phi, lambda, H, coord);
+
+    assert(fabsl(fabsl(coord[0]) - 1948.4374862817333194930924378240888L) < 1e-15);
+    assert(fabsl(fabsl(coord[1]) - 6073.2372302796543879210844352201093L) < 1e-15);
+    assert(fabsl(fabsl(coord[2]) - 1.882627999852175042661689419176696L) < 1e-15);
+
+    return;
+}
+
+void geodesic_to_terrestrial_test()
+{
+    double coord[3];
+    double phi = -0.000297158278354;
+    double lambda = -1.260346515309097;
+    double H = 0.0;
+    geodesic_to_terrestrial(phi, lambda, H, coord);
+
+    assert(fabsl(fabsl(coord[0]) - 1948.4374862817401) < 1e-12);
+    assert(fabsl(fabsl(coord[1]) - 6073.237230279653) < 1e-12);
+    assert(fabsl(fabsl(coord[2]) - 1.8826279998512623) < 1e-12);
+
+    return;
+}
+
+
+void celestial_to_geodesicl_test(void)
+{
+    long double date = utc_to_mjdl(2003, 7, 21, 1, 43, 28.2080L) - 0.125L;
+    long double pos[3], geodesic[3];
+
+    pos[0] = -7025.194987L;
+    pos[1] = -3565.559635L;
+    pos[2] = 0.0L;
+
+    celestial_to_geodesicl(date, pos, geodesic);
+
+    assert(fabsl(fabsl(geodesic[0]) - 0.00029715827835414411659784749602034037L) < 1e-15);
+    assert(fabsl(fabsl(geodesic[1]) - 1.2603465153090980096963619194738726L) < 1e-15);
+    assert(fabsl(fabsl(geodesic[2]) - 1500.0982830556401168564661929849535L) < 1e-15);
+
+    return;
+}
+
+
+void celestial_to_geodesic_test(void)
+{
+    double date = utc_to_mjd(2003, 7, 21, 1, 43, 28.2080) - 0.125;
+    double pos[3], geodesic[3];
+
+    pos[0] = -7025.194987;
+    pos[1] = -3565.559635;
+    pos[2] = 0.0;
+
+    celestial_to_geodesic(date, pos, geodesic);
+
+    assert(fabsl(fabsl(geodesic[0]) - 0.0002971582783541744) < 1e-12);
+    assert(fabsl(fabsl(geodesic[1]) - 1.260346515899303) < 1e-12);
+    assert(fabsl(fabsl(geodesic[2]) - 1500.0982830556393) < 1e-12);
+
+    return;
+}
+
+
 void test_coordinate_converters()
 {
     get_mean_equ_to_fixed_matrixl_test();
@@ -283,4 +353,10 @@ void test_coordinate_converters()
 
     spherical_to_cartesianl_test();
     spherical_to_cartesian_test();
+
+    geodesic_to_terrestriall_test();
+    geodesic_to_terrestrial_test();
+
+    celestial_to_geodesicl_test();
+    celestial_to_geodesic_test();
 }

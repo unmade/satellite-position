@@ -142,28 +142,50 @@ void spherical_to_cartesian(double l, double b, double r, double coordinates[3])
 
 
 /**
- * Функция реализует переход из геодезической в декартову (прямоугольную) СК
+ * Функция реализует переход из геодезической в Земную (прямоугольную) СК
  *
  * @param[in] phi Широта [рад]
  * @param[in] lambda Долгота  [рад]
  * @param[in] h Высота  [километр]
- * @param[out] coordinates Содержит прямоугольные коор-ты x, y, z соответственно [километр]
+ * @param[out] coordinates Содержит прямоугольные коор-ты x, y, z в Земной СК соответственно [километр]
  *
  */
-void geodesic_to_cartesianl(long double phi, long double lambda, long double h,
-                            long double coordinates[3]);
+void geodesic_to_terrestriall(long double phi, long double lambda, long double h,
+                              long double coordinates[3]);
 
 
 /**
- * Функция реализует переход из геодезической в декартову (прямоугольную) СК
+ * Функция реализует переход из геодезической в Земную (прямоугольную) СК
  *
  * @param[in] phi Широта [рад]
  * @param[in] lambda Долгота  [рад]
  * @param[in] h Высота  [километр]
- * @param[out] coordinates Содержит прямоугольные коор-ты x, y, z соответственно [километр]
+ * @param[out] coordinates Содержит прямоугольные коор-ты x, y, z в Земной СК соответственно [километр]
  *
  */
-void geodesic_to_cartesian(double phi, double lambda, double h,
-                           double coordinates[3]);
+void geodesic_to_terrestrial(double phi, double lambda, double h,
+                             double coordinates[3]);
+
+
+/**
+ * Функция реализует переход из небесной СК в геодезическую
+ *
+ * @param[in] utc_in_mjd Время UTC в модифицированных юлианских днях на которые задано положение в небесной СК
+ * @param[in] coordinates Координаты x, y, z тела в небесной СК соответственно
+ * @param[out] geodesic Геодезические координаты широта φ, долгота λ и высота H соответственно
+ *
+ */
+void celestial_to_geodesic(double utc_in_mjd, double coordinates[3], double geodesic[3]);
+
+
+/**
+ * Функция реализует переход из небесной СК в геодезическую
+ *
+ * @param[in] utc_in_mjd Время UTC в модифицированных юлианских днях на которые задано положение в небесной СК
+ * @param[in] coordinates Координаты x, y, z тела в небесной СК соответственно
+ * @param[out] geodesic Геодезические координаты широта φ, долгота λ и высота H соответственно
+ *
+ */
+void celestial_to_geodesicl(long double utc_in_mjd, long double coordinates[3], long double geodesic[3]);
 
 #endif //SATELLITE_PROPAGATION_COORDINATES_CONVERTERS_H

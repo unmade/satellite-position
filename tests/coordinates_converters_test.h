@@ -23,6 +23,12 @@ void get_terra_to_celes_matrix_test(void);
 void spherical_to_cartesianl_test(void);
 void spherical_to_cartesian_test(void);
 
+void geodesic_to_terrestriall_test(void);
+void geodesic_to_terrestrial_test(void);
+
+void celestial_to_geodesicl_test(void);
+void celestial_to_geodesic_test(void);
+
 void test_coordinate_converters(void);
 
 #endif //SATELLITE_PROPAGATION_COORDINATES_CONVERTERS_TEST_H

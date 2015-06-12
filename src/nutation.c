@@ -247,64 +247,39 @@ double get_eps_mean(double tdb)
 
 void get_fund_argsl(long double tdb, long double fund_args[5])
 {
-    int i;
-    long double r, l;
     long double dt = (tdb - MJD2000) / JULIAN_C;
     long double dt2 = dt*dt;
     long double dt3 = dt*dt2;
 
-    
-    // TODO: счтитать сразу в радианах
-    fund_args[0] = 218.31643250L + 481267.8812772222L*dt
-                -0.00161167L*dt2 + 0.00000528L*dt3;
-    fund_args[1] = 134.96298139L + 477198.8673980556L*dt
-                +0.00869722L*dt2 + 0.00001778L*dt3;
-    fund_args[2] = 357.52772333L + 35999.05034L*dt
-                -0.00016028e0L*dt2 - 0.00000333L*dt3;
-    fund_args[3] = 93.27191028L + 483202.0175380555L*dt
-                 -0.00368250L*dt2 + 0.00000306L*dt3;
-    fund_args[4] = 297.85036306L + 445267.11148L*dt
-                -0.00191417L*dt2 + 0.00000528L*dt3;
-
-    // TODO: от этого избавиться
-    for (i = 0; i < 5; i++)
-    {
-        r = fund_args[i];
-        l = truncl(r / 360.0);
-        fund_args[i] = (GRAD_IN_RAD) * (r - 360.0*l);
-    }
+    fund_args[0] = (218.31643250L + 481267.8812772222L*dt
+                    -0.00161167L*dt2 + 0.00000528L*dt3) * GRAD_IN_RAD ;
+    fund_args[1] = (134.96298139L + 477198.8673980556L*dt
+                    +0.00869722L*dt2 + 0.00001778L*dt3) * GRAD_IN_RAD;
+    fund_args[2] = (357.52772333L + 35999.05034L*dt
+                    -0.00016028e0L*dt2 - 0.00000333L*dt3) * GRAD_IN_RAD;
+    fund_args[3] = (93.27191028L + 483202.0175380555L*dt
+                    -0.00368250L*dt2 + 0.00000306L*dt3) * GRAD_IN_RAD;
+    fund_args[4] = (297.85036306L + 445267.11148L*dt
+                    -0.00191417L*dt2 + 0.00000528L*dt3) * GRAD_IN_RAD;
 
     return;
 }
 
 void get_fund_args(double tdb, double fund_args[5])
 {
-    int i;
-    double r, l;
     double dt = (tdb - MJD2000) / JULIAN_C;
     double dt2 = dt*dt;
     double dt3 = dt*dt2;
-
-    // TODO: счтитать сразу в радианах
-    fund_args[0] = 218.31643250 + 481267.8812772222*dt
-                   -0.00161167*dt2 + 0.00000528*dt3;
-    fund_args[1] = 134.96298139 + 477198.8673980556*dt
-                   +0.00869722*dt2 + 0.00001778*dt3;
-    fund_args[2] = 357.52772333 + 35999.05034*dt
-                   -0.00016028e0*dt2 - 0.00000333*dt3;
-    fund_args[3] = 93.27191028 + 483202.0175380555*dt
-                   -0.00368250*dt2 + 0.00000306*dt3;
-    fund_args[4] = 297.85036306 + 445267.11148*dt
-                   -0.00191417*dt2 + 0.00000528*dt3;
-
-
-    // TODO: от этого избавиться
-    for (i = 0; i < 5; i++)
-    {
-        r = fund_args[i];
-        l = trunc(r / 360.0);
-        fund_args[i] = (GRAD_IN_RAD) * (r - 360.0*l);
-    }
+    fund_args[0] = (218.31643250 + 481267.8812772222*dt
+                   -0.00161167*dt2 + 0.00000528*dt3) * GRAD_IN_RAD;
+    fund_args[1] = (134.96298139 + 477198.8673980556*dt
+                   +0.00869722*dt2 + 0.00001778*dt3) * GRAD_IN_RAD;
+    fund_args[2] = (357.52772333 + 35999.05034*dt
+                   -0.00016028e0*dt2 - 0.00000333*dt3) * GRAD_IN_RAD;
+    fund_args[3] = (93.27191028 + 483202.0175380555*dt
+                   -0.00368250*dt2 + 0.00000306*dt3) * GRAD_IN_RAD;
+    fund_args[4] = (297.85036306 + 445267.11148*dt
+                   -0.00191417*dt2 + 0.00000528*dt3) * GRAD_IN_RAD;
 
     return;
 }
@@ -356,7 +331,7 @@ void get_corr_fund_args(double tdb, double corr_fund_args[5])
     corr_fund_args[1] += SEC_IN_RAD*(2.94*s[0] + dr + 9.34*s[3]+1.12*s[4] + 0.83*s[5]);         // { l  radian }
     corr_fund_args[2] -= SEC_IN_RAD*(6.4*s[0] + 1.89*s[5]);                                     // { l' radian }
     corr_fund_args[3] += SEC_IN_RAD*(0.21*s[0]+dr-88.7*s[3]-15.3*s[4] + 0.24*s[5] - 1.86*s[6]); // { F }
-    corr_fund_args[4] += SEC_IN_RAD*(7.24*s[0]+dr + 7.26*s[3] + 0.28*s[4]+2.13*s[5]);            // { D  radian }
+    corr_fund_args[4] += SEC_IN_RAD*(7.24*s[0]+dr + 7.26*s[3] + 0.28*s[4]+2.13*s[5]);           // { D  radian }
 }
 
 

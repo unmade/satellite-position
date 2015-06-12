@@ -13,6 +13,7 @@
 #include "moon_test.h"
 #include "sun_test.h"
 #include "forces_test.h"
+#include "propagation_test.h"
 
 int main() {
 
@@ -26,7 +27,7 @@ int main() {
     test_moon();
     test_sun();
     test_forces();
-//    test_propagation();
+    test_propagation();
 
 
     long double start_date = utc_to_mjd(2015, 5, 14, 6, 0, 0);
@@ -51,7 +52,7 @@ int main() {
 //    printf("%Lf", (end_date - start_date) * 86400.0);
 //
 //
-    start_date = utc_to_mjd(2003, 7, 21, 1, 43, 28.2080) - 0.125;
+    start_date = utc_to_mjdl(2003, 7, 21, 1, 43, 28.2080) - 0.125;
 //    end_date = utc_to_mjdl(2003, 7, 21, 1, 43, 29.6900) - 0.125;
     end_date = utc_to_mjdl(2003, 7, 28, 00, 48, 37.6900) - 0.125;
 //    long double pos[3], fin_pos[3], vel[3], fin_vel[3];
@@ -61,6 +62,7 @@ int main() {
     vel[0] = 1.453492168;
     vel[1] = -2.862630493;
     vel[2] = 6.424834199;
+
 
 //    /* Локатор на 14.07.2003 02:52:16.0500 */
 //    start_date = utc_to_mjdl(2003, 7, 14, 2, 52, 16.0500L) - 0.125L;
@@ -115,7 +117,11 @@ int main() {
 //    vel[1] = fin_vel[1];
 //    vel[2] = fin_vel[2];
 
-    propagatel(100.0L, start_date, end_date, pos, vel, fin_pos, fin_vel);
+//    set_SB(6.0L);
+//    set_KR(1.5);
+
+//    propagatel(0, 100.0L, start_date, end_date, pos, vel, fin_pos, fin_vel);
+    propagatel(0, 100.0L, start_date, end_date, pos, vel, fin_pos, fin_vel);
 
     printf("\nx = %2.9f\ny = %2.9f\nz = %2.9f\n\n", (double)fin_pos[0], (double)fin_pos[1], (double)fin_pos[2]);
     printf("vx = %2.9f\nvy = %2.9f\nvz = %2.9f\n\n", (double)fin_vel[0], (double)fin_vel[1], (double)fin_vel[2]);

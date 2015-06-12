@@ -20,7 +20,7 @@ void get_acceleration_by_atmospherel(long double coord[3], long double vel[3], l
     vc = sqrtl(powl(vel[0], 2) + powl(vel[1], 2) + powl(vel[2], 2));
 
     for (i = 0; i < 3; i++) {
-        acceleration[i] = -Sb * p * vc * vel[i];
+        acceleration[i] = -SB * p * vc * vel[i];
     }
 
     return;
@@ -33,13 +33,13 @@ void get_acceleration_by_atmosphere(double coord[3], double vel[3], double accel
     int i;
     rc = sqrt(pow(coord[0], 2) + pow(coord[1], 2) + pow(coord[2], 2));
 
-    h = rc - R0 * (1 - A0*pow(coord[2]/rc, 2));
+    h = rc - (double)R0 * (1 - (double)A0*pow(coord[2]/rc, 2));
     p = 2e-13 * exp(-((h-200)/60));
 
     vc = sqrt(pow(vel[0], 2) + pow(vel[1], 2) + pow(vel[2], 2));
 
     for (i = 0; i < 3; i++)
-        acceleration[i] = -Sb * p * vc * vel[i];
+        acceleration[i] = -(double)SB * p * vc * vel[i];
 
     return;
 }
@@ -77,7 +77,7 @@ void get_acceleration_by_solar_pressure(double utc_in_mjd, double coord[3], doub
               + pow((sun_coord[2] - coord[2]), 2));
 
     for (i = 0; i < 3; i++)
-        acceleration[i] = CREFL * pow(AU/ro, 2) * (coord[i] - sun_coord[i])/ro;
+        acceleration[i] = (double)CREFL * pow(AU/ro, 2) * (coord[i] - sun_coord[i])/ro;
 
     return;
 }
@@ -89,30 +89,40 @@ void get_forcesl(long double t, long double coord[3], long double vel[3], long d
 
     acceleration[0] = 0; acceleration[1] = 0; acceleration[2] = 0;
 
-    get_acceleration_by_earthl(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_EARTH_FORCE) {
+        get_acceleration_by_earthl(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_moonl(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_MOON_FORCE) {
+        get_acceleration_by_moonl(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_sunl(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_SUN_FORCE) {
+        get_acceleration_by_sunl(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_atmospherel(coord, vel, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_ATMOSPHERE_FORCE) {
+        get_acceleration_by_atmospherel(coord, vel, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_solar_pressurel(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_SOLAR_FORCE) {
+        get_acceleration_by_solar_pressurel(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
     return;
 }
@@ -124,30 +134,40 @@ void get_forces(double t, double coord[3], double vel[3], double acceleration[3]
 
     acceleration[0] = 0; acceleration[1] = 0; acceleration[2] = 0;
 
-    get_acceleration_by_earth(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_EARTH_FORCE) {
+        get_acceleration_by_earth(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_moon(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_MOON_FORCE) {
+        get_acceleration_by_moon(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_sun(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_SUN_FORCE) {
+        get_acceleration_by_sun(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_atmosphere(coord, vel, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_ATMOSPHERE_FORCE) {
+        get_acceleration_by_atmosphere(coord, vel, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
-    get_acceleration_by_solar_pressure(t, coord, acc);
-    acceleration[0] += acc[0];
-    acceleration[1] += acc[1];
-    acceleration[2] += acc[2];
+    if (USE_SOLAR_FORCE) {
+        get_acceleration_by_solar_pressure(t, coord, acc);
+        acceleration[0] += acc[0];
+        acceleration[1] += acc[1];
+        acceleration[2] += acc[2];
+    }
 
     return;
 }

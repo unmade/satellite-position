@@ -53,9 +53,9 @@ void get_acceleration_by_moon(double utc_in_mjd, double celes_coord[3], double a
     r03 = pow(r0, 3);
 
 
-    acceleration[0] = FM_M * ((moon_coord[0] - celes_coord[0]) / r03) - FM_M * moon_coord[0] / r3;
-    acceleration[1] = FM_M * ((moon_coord[1] - celes_coord[1]) / r03) - FM_M * moon_coord[1] / r3;
-    acceleration[2] = FM_M * ((moon_coord[2] - celes_coord[2]) / r03) - FM_M * moon_coord[2] / r3;
+    acceleration[0] = (double)FM_M * ((moon_coord[0] - celes_coord[0]) / r03) - (double)FM_M * moon_coord[0] / r3;
+    acceleration[1] = (double)FM_M * ((moon_coord[1] - celes_coord[1]) / r03) - (double)FM_M * moon_coord[1] / r3;
+    acceleration[2] = (double)FM_M * ((moon_coord[2] - celes_coord[2]) / r03) - (double)FM_M * moon_coord[2] / r3;
 
     return;
 }

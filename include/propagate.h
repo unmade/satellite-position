@@ -9,6 +9,7 @@
 /**
  * Выполняет прогнозирование положения небесного тела на заданную дату
  *
+ * @param[in] method Выбор метода численного интегрирования 0 - Эверхарт, 1 - Рунге-Кутты
  * @param[in] step Шаг интегрирования
  * @param[in] start_date Начальный момент времени UTC, выраженный в модифицированных юлианских днях
  * @param[in] end_date Конечный момент времени UTC, выраженный в модифицированных юлианских днях,
@@ -19,7 +20,7 @@
  * @param[out] final_vel Конечный вектор скорости в небесной СК
  *
  */
-void propagatel(long double step, long double start_date, long double end_date,
+void propagatel(int method, long double step, long double start_date, long double end_date,
                 long double start_pos[3], long double start_vel[3],
                 long double final_pos[3], long double final_vel[3]);
 
@@ -27,6 +28,7 @@ void propagatel(long double step, long double start_date, long double end_date,
 /**
  * Выполняет прогнозирование положения небесного тела на заданную дату
  *
+ * @param[in] method Выбор метода численного интегрирования 0 - Эверхарт, 1 - Рунге-Кутты
  * @param[in] step Шаг интегрирования
  * @param[in] start_date Начальный момент времени UTC, выраженный в модифицированных юлианских днях
  * @param[in] end_date Конечный момент времени UTC, выраженный в модифицированных юлианских днях,
@@ -37,7 +39,7 @@ void propagatel(long double step, long double start_date, long double end_date,
  * @param[out] final_vel Конечный вектор скорости в небесной СК
  *
  */
-void propagate(double step, double start_date, double end_date,
+void propagate(int method, double step, double start_date, double end_date,
                double start_pos[3], double start_vel[3],
                double final_pos[3], double final_vel[3]);
 

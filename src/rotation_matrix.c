@@ -1,8 +1,7 @@
 //
-// Created by Леша on 22.05.15.
+// Created by Р›РµС€Р° on 22.05.15.
 //
 #include "math.h"
-#include <stdlib.h>
 
 #include "rotation_matrix.h"
 

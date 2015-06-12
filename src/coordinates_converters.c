@@ -125,8 +125,8 @@ void spherical_to_cartesian(double l, double b, double r,
 }
 
 
-void geodesic_to_cartesianl(long double phi, long double lambda, long double h,
-                            long double coordinates[3])
+void geodesic_to_terrestriall(long double phi, long double lambda, long double h,
+                              long double coordinates[3])
 {
     long double g, e2;
 
@@ -140,16 +140,82 @@ void geodesic_to_cartesianl(long double phi, long double lambda, long double h,
 }
 
 
-void geodesic_to_cartesian(double phi, double lambda, double h,
-                           double coordinates[3])
+void geodesic_to_terrestrial(double phi, double lambda, double h,
+                             double coordinates[3])
 {
     double g, e2;
 
-    e2 = 2*A0 - A0*A0;
-    g = R0 / sqrt(1 - e2*pow(sin(phi), 2));
+    e2 = 2*(double)A0 - (double)A0*(double)A0;
+    g = (double)R0 / sqrt(1 - e2*pow(sin(phi), 2));
     coordinates[0] = (g + h) * cos(phi) * cos(lambda);
     coordinates[1] = (g + h) * cos(phi) * sin(lambda);
     coordinates[2] = (g * (1 - e2) + h) * sin(phi);
+
+    return;
+}
+
+
+void celestial_to_geodesicl(long double utc_in_mjd, long double coordinates[3], long double geodesic[3])
+{
+    long double m_ct[3][3], terra_coord[3];
+    long double lambdas, phis, phic;
+    long double p, q, g, hg, e2;
+    int i;
+
+    e2 = 2*A0 - A0*A0;
+
+    get_celes_to_terra_matrixl(utc_in_mjd, 0.0, m_ct);
+    mult_matrix_by_vectorl(m_ct, coordinates, terra_coord);
+
+    p = sqrtl(terra_coord[0]*terra_coord[0] + terra_coord[1]*terra_coord[1]);
+    lambdas = terra_coord[1] / p;
+
+    hg = 0;
+    for (i = 0; i < 3; i++)
+    {
+        q = sqrtl(powl(terra_coord[2]*(1 + hg), 2) + powl(p * (1 - e2 + hg), 2));
+        phis = terra_coord[2]*(1+hg)/q;
+        phic = p*(1 - e2 + hg) / q;
+        g = R0 / sqrtl(1 - e2 * phis*phis);
+        hg = p / (g*phic) - 1;
+    }
+
+    geodesic[0] = asinl(phis);
+    geodesic[1] = asinl(lambdas);
+    geodesic[2] = hg*g;
+
+    return;
+}
+
+
+void celestial_to_geodesic(double utc_in_mjd, double coordinates[3], double geodesic[3])
+{
+    double m_ct[3][3], terra_coord[3];
+    double phis, phic, lambdas;
+    double p, q, g, hg, e2;
+    int i;
+
+    e2 = 2*(double)A0 - (double)A0*(double)A0;
+
+    get_celes_to_terra_matrix(utc_in_mjd, 0.0, m_ct);
+    mult_matrix_by_vector(m_ct, coordinates, terra_coord);
+
+    p = sqrt(terra_coord[0]*terra_coord[0] + terra_coord[1]*terra_coord[1]);
+    lambdas = terra_coord[1] / p;
+
+    hg = 0;
+    for (i = 0; i < 3; i++)
+    {
+        q = sqrt(pow(terra_coord[2]*(1 + hg), 2) + pow(p * (1 - e2 + hg), 2));
+        phis = terra_coord[2]*(1+hg)/q;
+        phic = p*(1 - e2 + hg) / q;
+        g = (double)R0 / sqrt(1 - e2 * phis*phis);
+        hg = p / (g*phic) - 1;
+    }
+
+    geodesic[0] = asin(phis);
+    geodesic[1] = asin(lambdas);
+    geodesic[2] = hg*g;
 
     return;
 }
