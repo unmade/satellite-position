@@ -234,6 +234,54 @@ void get_terra_to_celes_matrix_test(void)
 }
 
 
+void get_topocentric_matrixl_test(void)
+{
+    long double latitude = -0.0002971582783541441;
+    long double longtitude = -1.260346515309098;
+    long double m_tq[3][3];
+    
+    get_topocentric_matrixl(latitude, longtitude, m_tq);
+
+    assert(fabsl(fabsl(m_tq[0][0]) - 0.95219621262791199) < 1e-15);
+    assert(fabsl(fabsl(m_tq[0][1]) - 0.00028295299552826128) < 1e-15);
+    assert(fabsl(fabsl(m_tq[0][2]) - 0.30548697614573106) < 1e-15);
+
+    assert(fabsl(fabsl(m_tq[1][0]) - 0.00029715827398069751) < 1e-15);
+    assert(fabsl(fabsl(m_tq[1][1]) - 0.99999995584847912) < 1e-15);
+    assert(fabsl(fabsl(m_tq[1][2]) - 3.7410129199804725e-017) < 1e-15);
+
+    assert(fabsl(fabsl(m_tq[2][0]) - 0.30548696265801645) < 1e-15);
+    assert(fabsl(fabsl(m_tq[2][1]) - 9.0777982555083589e-005) < 1e-15);
+    assert(fabsl(fabsl(m_tq[2][2]) - 0.95219625466882485) < 1e-15);
+    
+    return;
+}
+
+
+void get_topocentric_matrix_test(void)
+{
+    double latitude = -0.0002971582783541441;
+    double longtitude = -1.260346515309098;
+    double m_tq[3][3];
+
+    get_topocentric_matrix(latitude, longtitude, m_tq);
+
+    assert(fabs(fabs(m_tq[0][0]) - 0.95219621262791188) < 1e-15);
+    assert(fabs(fabs(m_tq[0][1]) - 0.00028295299552826122) < 1e-15);
+    assert(fabs(fabs(m_tq[0][2]) - 0.30548697614573128) < 1e-15);
+
+    assert(fabs(fabs(m_tq[1][0]) - 0.00029715827398069751) < 1e-15);
+    assert(fabs(fabs(m_tq[1][1]) - 0.99999995584847912) < 1e-15);
+    assert(fabs(fabs(m_tq[1][2]) - 3.7410129199804755e-017) < 1e-15);
+
+    assert(fabs(fabs(m_tq[2][0]) - 0.30548696265801667) < 1e-15);
+    assert(fabs(fabs(m_tq[2][1]) - 9.0777982555083643e-005) < 1e-15);
+    assert(fabs(fabs(m_tq[2][2]) - 0.95219625466882474) < 1e-15);
+
+    return;
+}
+
+
 void spherical_to_cartesianl_test(void)
 {
     long double coord[3];
@@ -350,6 +398,9 @@ void test_coordinate_converters()
 
     get_terra_to_celes_matrixl_test();
     get_terra_to_celes_matrix_test();
+
+    get_topocentric_matrixl_test();
+    get_topocentric_matrix_test();
 
     spherical_to_cartesianl_test();
     spherical_to_cartesian_test();

@@ -103,6 +103,34 @@ void get_terra_to_celes_matrix(double m_ct[3][3], double m_tc[3][3])
 }
 
 
+void get_topocentric_matrixl(long double lambda, long double phi, long double m_tq[3][3])
+{
+    long double Rz_180[3][3], Ry_phi[3][3], Rz_lambda[3][3], temp[3][3];
+    rotzl(M_PI, Rz_180);
+    rotyl(M_PI_2 - phi, Ry_phi);
+    rotzl(lambda, Rz_lambda);
+
+    mult_matricesl(Ry_phi, Rz_lambda, temp);
+    mult_matricesl(Rz_180, temp, m_tq);
+
+    return;
+}
+
+
+void get_topocentric_matrix(double lambda, double phi, double m_tq[3][3])
+{
+    double Rz_180[3][3], Ry_phi[3][3], Rz_lambda[3][3], temp[3][3];
+    rotz(M_PI, Rz_180);
+    roty(M_PI_2 - phi, Ry_phi);
+    rotz(lambda, Rz_lambda);
+
+    mult_matrices(Ry_phi, Rz_lambda, temp);
+    mult_matrices(Rz_180, temp, m_tq);
+
+    return;
+}
+
+
 void spherical_to_cartesianl(long double l, long double b, long double r,
                              long double coordinates[3])
 {
